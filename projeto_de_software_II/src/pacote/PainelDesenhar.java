@@ -1,10 +1,12 @@
 package pacote;
+import java.awt.Graphics;
 // Classe de adaptadores utilizada para implementar rotinas de tratamento de evento.
 import java.awt.Point;
-import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.util.ArrayList;
+
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class PainelDesenhar extends JPanel
@@ -13,18 +15,26 @@ public class PainelDesenhar extends JPanel
 	private final ArrayList<Point> points = new ArrayList<>();
 
 	// configura GUI e registra rotinas de tratamento de evento de mouse
-	public PainelDesenhar()
+	public PainelDesenhar(JLabel status)
 	{
 		// trata evento de movimento de mouse do frame
 		addMouseMotionListener( 
 			new MouseMotionAdapter() // classe interna anônima
 			{
+				
+				@Override
+				public void mouseMoved(MouseEvent event) {
+					super.mouseMoved(event);
+					status.setText("Moved in [" + event.getPoint().getX() + "," + event.getPoint().getY() + "]");
+				}
+				
 				// armazena coordenadas da ação de arrastar e repinta
 				@Override
 				public void mouseDragged(MouseEvent event)
 				{
 					points.add(event.getPoint());
 					repaint(); // repinta JFrame
+					status.setText("Dragged in [" + event.getPoint().getX() + "," + event.getPoint().getY() + "]");
 				}
 			}
 		);

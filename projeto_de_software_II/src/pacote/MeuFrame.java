@@ -1,5 +1,7 @@
 package pacote;
 
+import java.io.IOException;
+
 import javax.swing.JFrame;
 
 public class MeuFrame extends JFrame{

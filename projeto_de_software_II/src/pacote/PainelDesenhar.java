@@ -1,6 +1,8 @@
 package pacote;
 
 import java.awt.Graphics;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 // Classe de adaptadores utilizada para implementar rotinas de tratamento de evento.
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
@@ -8,15 +10,16 @@ import java.awt.event.MouseMotionAdapter;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import arquivos.ManipuladorArquivo;
 import lista.encadeada.Iterador;
 import lista.encadeada.ListaEncadeada;
 
 public class PainelDesenhar extends JPanel {
 	// lista das referências Point
-	private final ListaEncadeada<Ponto> points = new ListaEncadeada<Ponto>();
+	private final ListaEncadeada<Ponto> points;
 
 	// configura GUI e registra rotinas de tratamento de evento de mouse
-	public PainelDesenhar(JLabel status) {
+	public PainelDesenhar(JLabel status, ListaEncadeada<Ponto> points) {
 		// trata evento de movimento de mouse do frame
 		addMouseMotionListener(new MouseMotionAdapter() // classe interna anônima
 		{
@@ -35,6 +38,7 @@ public class PainelDesenhar extends JPanel {
 				status.setText("Dragged in [" + event.getPoint().getX() + "," + event.getPoint().getY() + "]" + " - Tamanho Total = " + points.getTamanho());
 			}
 		});
+		this.points = points;
 	}
 
 	// desenha ovais em um quadro delimitador de 4 x 4 nas localizações
@@ -52,4 +56,5 @@ public class PainelDesenhar extends JPanel {
 			g.fillOval(ponto.x, ponto.y, 4, 4);
 		}
 	}
-} // fim da classe PaintPanel
+
+}// fim da classe PaintPanel

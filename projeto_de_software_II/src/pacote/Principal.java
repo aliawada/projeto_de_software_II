@@ -1,14 +1,10 @@
 package pacote;
 
 import java.awt.BorderLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
-import javax.swing.JButton;
 import javax.swing.JLabel;
 
-import arquivos.ManipuladorArquivo;
-import lista.encadeada.Iterador;
+import arquivos.LerArqTexto;
 import lista.encadeada.ListaEncadeada;
 
 public class Principal {
@@ -19,30 +15,36 @@ public class Principal {
 		
 		ListaEncadeada<Ponto> points = new ListaEncadeada<Ponto>();
 		
+		LerArqTexto arq = new LerArqTexto();
+		arq.openFile();
+		arq.lerArquivo(points);
+		arq.closeFile();
+		
 		JLabel status = new JLabel("Arraste o mouse para desenhar");
 		frame.add(status, BorderLayout.SOUTH);
 		
 		PainelDesenhar paineldesenhar = new PainelDesenhar(status, points);
 		frame.add(paineldesenhar, BorderLayout.CENTER);
 		
-		JButton salvar = new JButton();
-		salvar.setText("SALVAR");
-		frame.add(salvar, BorderLayout.NORTH);
 		
-		salvar.addActionListener(new ActionListener() {
-		    String string;   
-		    Iterador<Ponto> it = points.getInicio();
-			Ponto ponto;
+		/*JButton salvarArq = new JButton();
+		salvarArq.setText("Salvar Em Arquivo");
+		frame.add(salvarArq, BorderLayout.NORTH);
+		
+		salvarArq.addActionListener(new ActionListener() {	
 			public void actionPerformed(ActionEvent e) {
-				if(e.getActionCommand().equals(salvar)){
-				while((ponto = it.proximo()) != null) {
-					string = String.format("Ponto %d %d", ponto.x,ponto.y);
+				String string;   
+			    Iterador<Ponto> it = points.getInicio();
+				Ponto ponto;
+				if(e.getSource() == salvarArq) {
+					while((ponto = it.proximo()) != null) {
+					string = String.format("%d %d\r\n", ponto.x,ponto.y);
 				    ManipuladorArquivo.escritor("PainelDeDesenhar.txt", string);
-				}
 		      }
+			 }
 			}
-		  });
-
+		  });*/
+		
 	}
 
 }

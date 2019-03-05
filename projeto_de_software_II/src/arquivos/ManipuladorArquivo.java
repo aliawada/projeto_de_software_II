@@ -28,7 +28,7 @@ public class ManipuladorArquivo {
 	    public static void escritor(String path, String string)  {
 			try {
 				BufferedWriter buffWrite = new BufferedWriter(new FileWriter(path,true));
-				buffWrite.append(string + "\n");
+				buffWrite.append(string);
 		        buffWrite.close(); 
 			} catch (IOException e) {
 				e.printStackTrace();

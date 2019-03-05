@@ -8,9 +8,9 @@ public class MeuFrame extends JFrame{
 	
 	public MeuFrame() {
 		
-		super("Meu Frame");
+		super("Trabalho PSW II");
 		
-		this.setSize(500,500);
+		this.setSize(800,400);
 		this.setLocation(450,300);
 		this.setVisible(true);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

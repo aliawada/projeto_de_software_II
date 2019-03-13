@@ -221,4 +221,10 @@ public class ListaEncadeada<TIPO> {
 
 		return aux.dado;
 	}
+	
+	public void limparLista() {
+		while(!this.isVazia()) {
+			this.removerFim();
+		}
+	}
 }

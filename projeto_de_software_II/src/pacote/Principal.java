@@ -11,9 +11,10 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
 
+import arquivos.Deserialize;
 import arquivos.ManipuladorArquivo;
+import arquivos.Serialize;
 import lista.encadeada.Iterador;
 import lista.encadeada.ListaEncadeada;
 
@@ -60,13 +61,44 @@ public final class Principal {
 				String string;   
 			    Iterador<Ponto> it = points.getInicio();
 				Ponto ponto;	
-				if(e.getSource() == saveAction) {
-					String path = JOptionPane.showInputDialog(null,"Nome do Arquivo de Texto que deseja salvar?", JOptionPane.INFORMATION_MESSAGE);
-					File file = new File(System.getProperty("user.dir") + "/" +  path + ".txt");
-					while((ponto = it.proximo()) != null) {
-					string = String.format("Ponto %d %d\r\n", ponto.x,ponto.y);
-				    ManipuladorArquivo.escritor(file, string);
-		      }
+				if(e.getSource() == saveAction) {	
+					int option = tipoArquivo();
+					
+					//Arquivo Texto
+				    if(option == 0) {
+						String path = JOptionPane.showInputDialog(null,"Nome do Arquivo de Texto que deseja salvar?", JOptionPane.INFORMATION_MESSAGE);
+						File file = new File(System.getProperty("user.dir") + "/" +  path + ".txt");
+						if(!file.exists()) {
+							JOptionPane.showMessageDialog(null, "Arquivo de Texto não existe!");
+						} else {
+						while((ponto = it.proximo()) != null) {
+						string = String.format("Ponto %d %d\r\n", ponto.x,ponto.y);
+					    ManipuladorArquivo.escritor(file, string);
+						}
+					  }
+				    }
+				    
+				    //Arquivo Serializable
+				    if(option == 1) {
+				    	String path = JOptionPane.showInputDialog(null,"Nome do Arquivo Serializado que deseja salvar?", JOptionPane.INFORMATION_MESSAGE);
+						File file = new File(System.getProperty("user.dir") + "/" +  path + ".ser");
+						if(!file.exists()) {
+							JOptionPane.showMessageDialog(null, "Arquivo Serializado não existe!");
+						} else {
+							Serialize.serialize(file);
+						}
+				    }
+				    
+				    //Arquivo Binário
+				    if(option == 2) {
+				    	
+				    }
+				    
+				    //Exit
+				    if(option == -1 || option == 3) {
+				    	JOptionPane.showMessageDialog(null, "Não foi possível SALVAR! o arquivo");
+				    }
+				    
 			 }
 			}
 		  });	
@@ -75,16 +107,47 @@ public final class Principal {
         newAction.addActionListener(new ActionListener() {	
 			public void actionPerformed(ActionEvent e) {	
 				if(e.getSource() == newAction) {
+					int option = tipoArquivo();
+					//Arquivo Texto
+				    if(option == 0) {
 					try {
 						String path = JOptionPane.showInputDialog(null,"Nome do Arquivo de Texto que deseja criar?", JOptionPane.INFORMATION_MESSAGE);
 						File newFile = new File(System.getProperty("user.dir") + "/" +  path + ".txt");
 						newFile.createNewFile();
 						points.limparLista();
-						ManipuladorArquivo.leitor(newFile, points);
-						SwingUtilities.updateComponentTreeUI(frame);
+						ManipuladorArquivo.leitor(newFile);
+						frame.repaint();
 					} catch (IOException e1) {
 						e1.printStackTrace();
 					}	
+				   }
+					
+					 //Arquivo Serializable
+				    if(option == 1) {
+				    	try {
+							String path = JOptionPane.showInputDialog(null,"Nome do Arquivo de Texto que deseja criar?", JOptionPane.INFORMATION_MESSAGE);
+							File newFile = new File(System.getProperty("user.dir") + "/" +  path + ".ser");
+							newFile.createNewFile();
+							points.limparLista();
+							Serialize.serialize(newFile);
+							frame.repaint();
+						} catch (IOException e1) {
+							e1.printStackTrace();
+						}	
+							
+				    }
+				    
+				    //Arquivo Binário
+				    if(option == 2) {
+				    	
+				    }
+				    
+				    //Exit
+				    if(option == -1 || option == 3) {
+				    	JOptionPane.showMessageDialog(null, "Não foi possível CRIAR! um novo Arquivo");
+				    }
+				    
+				    
 		      }	
 			}
 		  });	
@@ -92,12 +155,45 @@ public final class Principal {
        openAction.addActionListener(new ActionListener() {	
 			public void actionPerformed(ActionEvent e) {	
 				if(e.getSource() == openAction) {
+					int option = tipoArquivo();
+					//Arquivo Texto
+				    if(option == 0) {
 					String path = JOptionPane.showInputDialog(null,"Nome do Arquivo de Texto que deseja abrir?", JOptionPane.INFORMATION_MESSAGE);
 					File openFile = new File(System.getProperty("user.dir") + "/" +  path + ".txt");
-					points.limparLista();
-					ManipuladorArquivo.leitor(openFile, points);
-					SwingUtilities.updateComponentTreeUI(frame);
-		      }	
+						if(!openFile.exists()) {
+							JOptionPane.showMessageDialog(null, "Arquivo não existe!");
+						} else {
+						points.limparLista();
+						ManipuladorArquivo.leitor(openFile);
+						frame.repaint();
+						}		
+				    }
+				
+					 //Arquivo Serializable
+				    if(option == 1) {
+				    	String path = JOptionPane.showInputDialog(null,"Nome do Arquivo de Texto que deseja abrir?", JOptionPane.INFORMATION_MESSAGE);
+						File openFile = new File(System.getProperty("user.dir") + "/" +  path + ".ser");
+						if(!openFile.exists()) {
+							JOptionPane.showMessageDialog(null, "Arquivo Serializado não existe!");
+						} else {
+							points.limparLista();
+							Deserialize.deserialize(openFile);
+							frame.repaint();
+						}
+				    }
+				    
+				    //Arquivo Binário
+				    if(option == 2) {
+				    	
+				    }
+				    
+				    //Exit
+				    if(option == -1 || option == 3) {
+				    	JOptionPane.showMessageDialog(null, "Não foi possível ABRIR! um novo Arquivo");
+				    }
+			    
+			    
+				}
 			}
 		  });	
         
@@ -118,7 +214,16 @@ public final class Principal {
 		return Principal.principal;
 	}
 	
-	
+	public static int tipoArquivo() {
+		
+		String[] options = new String[] {"Texto", "Serialize", "Binário"};
+		
+	    int response = JOptionPane.showOptionDialog(null, "Tipo de Arquivo?", "Options",
+	        JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,
+	        null, options, options[0]);
+	    
+	    return response;
+	}
 	
 	public static void main(String[] args) {
 			Principal.getPrincipal();	

@@ -1,7 +1,9 @@
 package lista.encadeada;
 
-public class ListaEncadeada<TIPO> {
-	public class IteradorConcreto implements Iterador<TIPO> {
+import java.io.Serializable;
+
+public class ListaEncadeada<TIPO> implements Serializable {
+	public class IteradorConcreto implements Iterador<TIPO>{
 		private No noAtual;
 		
 		IteradorConcreto(No noAtual) {
@@ -35,7 +37,7 @@ public class ListaEncadeada<TIPO> {
 
 	}
 
-	private class No {
+	private class No implements Serializable{
 		public No proximo;
 		public No anterior;
 		

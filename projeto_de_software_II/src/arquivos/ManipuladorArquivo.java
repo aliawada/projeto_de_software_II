@@ -7,18 +7,18 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
-import lista.encadeada.ListaEncadeada;
 import pacote.Ponto;
+import pacote.Principal;
 
 public class ManipuladorArquivo {
 		
-		public static void leitor(File file, ListaEncadeada<Ponto> points) {
+		public static void leitor(File file) {
 			String string;
 			try {
 				BufferedReader buffRead = new BufferedReader(new FileReader(file));
 				while((string = buffRead.readLine()) != null) {
 					String[] parts = string.split(" ");
-					points.inserirFim(new Ponto(Integer.valueOf(parts[1]), Integer.valueOf(parts[2])));
+					Principal.getPrincipal().inserirFim(new Ponto(Integer.valueOf(parts[1]), Integer.valueOf(parts[2])));
 				}
 				buffRead.close();
 			} catch (Exception e) {

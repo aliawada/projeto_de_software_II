@@ -11,7 +11,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import lista.encadeada.Iterador;
-import lista.encadeada.ListaEncadeada;
 
 public class PainelDesenhar extends JPanel {
 	// lista das referências Point

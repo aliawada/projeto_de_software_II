@@ -14,6 +14,7 @@ import javax.swing.JOptionPane;
 
 import arquivos.Deserialize;
 import arquivos.ManipuladorArquivo;
+import arquivos.RandomAcessFile;
 import arquivos.Serialize;
 import lista.encadeada.Iterador;
 import lista.encadeada.ListaEncadeada;
@@ -91,7 +92,13 @@ public final class Principal {
 				    
 				    //Arquivo Binário
 				    if(option == 2) {
-				    	
+				    	String path = JOptionPane.showInputDialog(null,"Nome do Arquivo Binário que deseja salvar?", JOptionPane.INFORMATION_MESSAGE);
+						File file = new File(System.getProperty("user.dir") + "/" +  path + ".txt");
+						if(!file.exists()) {
+							JOptionPane.showMessageDialog(null, "Arquivo Binário não existe!");
+						} else {
+							RandomAcessFile.escreverRAF(file);
+						}
 				    }
 				    
 				    //Exit
@@ -139,7 +146,16 @@ public final class Principal {
 				    
 				    //Arquivo Binário
 				    if(option == 2) {
-				    	
+				    	try {
+							String path = JOptionPane.showInputDialog(null,"Nome do Arquivo Binário que deseja criar?", JOptionPane.INFORMATION_MESSAGE);
+							File newFile = new File(System.getProperty("user.dir") + "/" +  path + ".txt");
+							newFile.createNewFile();
+							points.limparLista();
+							RandomAcessFile.escreverRAF(newFile);
+							frame.repaint();
+						} catch (IOException e1) {
+							e1.printStackTrace();
+						}	
 				    }
 				    
 				    //Exit
@@ -171,10 +187,10 @@ public final class Principal {
 				
 					 //Arquivo Serializable
 				    if(option == 1) {
-				    	String path = JOptionPane.showInputDialog(null,"Nome do Arquivo de Texto que deseja abrir?", JOptionPane.INFORMATION_MESSAGE);
+				    	String path = JOptionPane.showInputDialog(null,"Nome do Arquivo Serializado que deseja abrir?", JOptionPane.INFORMATION_MESSAGE);
 						File openFile = new File(System.getProperty("user.dir") + "/" +  path + ".ser");
 						if(!openFile.exists()) {
-							JOptionPane.showMessageDialog(null, "Arquivo Serializado não existe!");
+							JOptionPane.showMessageDialog(null, "Arquivo não existe!");
 						} else {
 							points.limparLista();
 							Deserialize.deserialize(openFile);
@@ -184,7 +200,15 @@ public final class Principal {
 				    
 				    //Arquivo Binário
 				    if(option == 2) {
-				    	
+				    	String path = JOptionPane.showInputDialog(null,"Nome do Arquivo Binário que deseja abrir?", JOptionPane.INFORMATION_MESSAGE);
+						File openFile = new File(System.getProperty("user.dir") + "/" +  path + ".txt");
+							if(!openFile.exists()) {
+								JOptionPane.showMessageDialog(null, "Arquivo não existe!");
+							} else {
+							points.limparLista();
+							RandomAcessFile.lerRAF(openFile);
+							frame.repaint();
+							}		
 				    }
 				    
 				    //Exit

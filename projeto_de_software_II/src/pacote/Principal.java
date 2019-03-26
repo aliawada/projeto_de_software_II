@@ -24,6 +24,7 @@ public final class Principal {
 	private static Principal principal = new Principal();
 	private ListaEncadeada<Ponto> points = new ListaEncadeada<Ponto>();
 	
+	
 	public void inserirFim(Ponto ponto) {
 		this.points.inserirFim(ponto);
 	}
@@ -45,8 +46,11 @@ public final class Principal {
 		JMenuItem newAction = new JMenuItem("New");
 	    JMenuItem openAction = new JMenuItem("Open");
 	    JMenuItem saveAction = new JMenuItem("Save");
-	    JMenuItem exitAction = new JMenuItem("Exit");
-	   
+	    JMenuItem exitAction = new JMenuItem("Exit");  
+	    JMenu figureMenu = new JMenu("Figure");
+	    JMenuItem figurePonto = new JMenuItem("Ponto");
+	    JMenuItem figureLinha = new JMenuItem("Linha");
+	    
 		frame.add(status, BorderLayout.SOUTH);
 		frame.add(paineldesenhar, BorderLayout.CENTER);
 		frame.setJMenuBar(menuBar);
@@ -55,8 +59,12 @@ public final class Principal {
 	    fileMenu.add(openAction);
 	    fileMenu.add(saveAction);
 	    fileMenu.addSeparator();
-	    fileMenu.add(exitAction);	
-	
+	    fileMenu.add(exitAction);	  
+	    menuBar.add(figureMenu);
+	    figureMenu.add(figurePonto);
+	    figureMenu.add(figureLinha);
+	    
+	    
 		saveAction.addActionListener(new ActionListener() {	
 			public void actionPerformed(ActionEvent e) {
 				String string;   

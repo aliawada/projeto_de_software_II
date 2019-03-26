@@ -1,8 +1,11 @@
 package pacote;
 
-import java.io.Serializable;
-
-public class Ponto implements Serializable{
+public class Ponto extends FiguraGeometrica {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	public int x;
 	public int y;
 	

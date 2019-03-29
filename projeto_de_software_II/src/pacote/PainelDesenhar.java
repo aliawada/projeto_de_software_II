@@ -31,7 +31,7 @@ public class PainelDesenhar extends JPanel {
 			// armazena coordenadas da ação de arrastar e repinta
 			@Override
 			public void mouseDragged(MouseEvent event) {
-				Principal.getPrincipal().inserirFim(new Ponto(event.getPoint().x, event.getPoint().y));
+				Principal.getPrincipal().inserirFim(new Linha(new Ponto(event.getPoint().x, event.getPoint().y), new Ponto(event.getPoint().x, event.getPoint().y)));
 				repaint(); // repinta JFrame
 				status.setText("Dragged in [" + event.getPoint().getX() + "," + event.getPoint().getY() + "]" + " - Tamanho Total = " +  Principal.getPrincipal().getTamanho());
 			}
@@ -41,7 +41,7 @@ public class PainelDesenhar extends JPanel {
 
 				@Override
 				public void mouseReleased(MouseEvent e) {
-					paintImmediately(100, 100, 100, 100);
+					
 				}
 
 				@Override
@@ -76,14 +76,14 @@ public class PainelDesenhar extends JPanel {
 	@Override
 	public void paintComponent(Graphics g) {
 
-		Iterador<Ponto> it = Principal.getPrincipal().getIterador();
-		Ponto ponto;
+		Iterador<FormaGeometrica> it = Principal.getPrincipal().getIterador();
+		FormaGeometrica forma;
 
 		super.paintComponent(g); // limpa a área de desenho
 
 		// desenha todos os pontos
-		while((ponto = it.proximo()) != null) {
-			g.fillOval(ponto.x, ponto.y, 7, 7);
+		while((forma = it.proximo()) != null) {
+			forma.desenhar(g);
 		}
 	}
 

@@ -1,6 +1,8 @@
 package pacote;
 
-public class Ponto extends FiguraGeometrica {
+import java.awt.Graphics;
+
+public class Ponto implements FormaGeometrica {
 	/**
 	 * 
 	 */
@@ -34,5 +36,16 @@ public class Ponto extends FiguraGeometrica {
 	public void setY(int y) {
 		this.y = y;
 	}
+	
+	public void desenhar(Graphics g){
+		g.fillOval(x, y, 7, 7);
+	}
+	
+	public String toString(){
+		return String.format("%d %d", x, y);
+	}
+	
+	//Para salavar em binário
+	
 	
 }

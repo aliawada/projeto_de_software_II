@@ -22,19 +22,19 @@ import lista.encadeada.ListaEncadeada;
 public final class Principal {
 	
 	private static Principal principal = new Principal();
-	private ListaEncadeada<Ponto> points = new ListaEncadeada<Ponto>();
+	private ListaEncadeada<FormaGeometrica> lista = new ListaEncadeada<FormaGeometrica>();
 	
 	
-	public void inserirFim(Ponto ponto) {
-		this.points.inserirFim(ponto);
+	public void inserirFim(FormaGeometrica forma) {
+		this.lista.inserirFim(forma);
 	}
 	
-	public Iterador<Ponto> getIterador() {
-		return this.points.getInicio();
+	public Iterador<FormaGeometrica> getIterador() {
+		return this.lista.getInicio();
 	}
 	
 	public Integer getTamanho() {
-		return this.points.getTamanho();
+		return this.lista.getTamanho();
 	}
 	
 	private Principal() {
@@ -67,9 +67,7 @@ public final class Principal {
 	    
 		saveAction.addActionListener(new ActionListener() {	
 			public void actionPerformed(ActionEvent e) {
-				String string;   
-			    Iterador<Ponto> it = points.getInicio();
-				Ponto ponto;	
+					
 				if(e.getSource() == saveAction) {	
 					int option = tipoArquivo();
 					
@@ -80,12 +78,9 @@ public final class Principal {
 						if(!file.exists()) {
 							JOptionPane.showMessageDialog(null, "Arquivo de Texto não existe!");
 						} else {
-						while((ponto = it.proximo()) != null) {
-						string = String.format("Ponto %d %d\r\n", ponto.x,ponto.y);
-					    ManipuladorArquivo.escritor(file, string);
+					    ManipuladorArquivo.escritor(file);
 						}
 					  }
-				    }
 				    
 				    //Arquivo Serializable
 				    if(option == 1) {
@@ -129,7 +124,7 @@ public final class Principal {
 						String path = JOptionPane.showInputDialog(null,"Nome do Arquivo de Texto que deseja criar?", JOptionPane.INFORMATION_MESSAGE);
 						File newFile = new File(System.getProperty("user.dir") + "/" +  path + ".txt");
 						newFile.createNewFile();
-						points.limparLista();
+						lista.limparLista();
 						ManipuladorArquivo.leitor(newFile);
 						frame.repaint();
 					} catch (IOException e1) {
@@ -143,7 +138,7 @@ public final class Principal {
 							String path = JOptionPane.showInputDialog(null,"Nome do Arquivo de Texto que deseja criar?", JOptionPane.INFORMATION_MESSAGE);
 							File newFile = new File(System.getProperty("user.dir") + "/" +  path + ".ser");
 							newFile.createNewFile();
-							points.limparLista();
+							lista.limparLista();
 							Serialize.serialize(newFile);
 							frame.repaint();
 						} catch (IOException e1) {
@@ -158,7 +153,7 @@ public final class Principal {
 							String path = JOptionPane.showInputDialog(null,"Nome do Arquivo Binário que deseja criar?", JOptionPane.INFORMATION_MESSAGE);
 							File newFile = new File(System.getProperty("user.dir") + "/" +  path + ".txt");
 							newFile.createNewFile();
-							points.limparLista();
+							lista.limparLista();
 							RandomAcessFile.escreverRAF(newFile);
 							frame.repaint();
 						} catch (IOException e1) {
@@ -187,7 +182,7 @@ public final class Principal {
 						if(!openFile.exists()) {
 							JOptionPane.showMessageDialog(null, "Arquivo não existe!");
 						} else {
-						points.limparLista();
+						lista.limparLista();
 						ManipuladorArquivo.leitor(openFile);
 						frame.repaint();
 						}		
@@ -200,7 +195,7 @@ public final class Principal {
 						if(!openFile.exists()) {
 							JOptionPane.showMessageDialog(null, "Arquivo não existe!");
 						} else {
-							points.limparLista();
+							lista.limparLista();
 							Deserialize.deserialize(openFile);
 							frame.repaint();
 						}
@@ -213,7 +208,7 @@ public final class Principal {
 							if(!openFile.exists()) {
 								JOptionPane.showMessageDialog(null, "Arquivo não existe!");
 							} else {
-							points.limparLista();
+							lista.limparLista();
 							RandomAcessFile.lerRAF(openFile);
 							frame.repaint();
 							}		
@@ -236,6 +231,7 @@ public final class Principal {
 		      }	
 			}
 		  });
+        
         
 		
 	}

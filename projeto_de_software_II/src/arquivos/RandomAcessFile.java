@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 
 import lista.encadeada.Iterador;
+import pacote.FormaGeometrica;
 import pacote.Ponto;
 import pacote.Principal;
 
@@ -24,12 +25,13 @@ public class RandomAcessFile {
 		}
 		
 		try {
-			Iterador<Ponto> it = Principal.getPrincipal().getIterador();
-	        Ponto ponto;
+			Iterador<FormaGeometrica> it = Principal.getPrincipal().getIterador();
+	        FormaGeometrica forma;
 			
-	        while((ponto = it.proximo()) != null) {
+	        while((forma = it.proximo()) != null) {
+	        String string = forma.toString();
 	        raf.writeByte(1);
-			raf.writeInt(ponto.x);
+			raf.writeInt(ponsto.x);
 			raf.writeInt(ponto.y);
 	        }
 	      raf.close();

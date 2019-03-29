@@ -1,6 +1,8 @@
 package pacote;
 
-public class Linha extends FiguraGeometrica {
+import java.awt.Graphics;
+
+public class Linha implements FormaGeometrica {
 	/**
 	 * 
 	 */
@@ -33,6 +35,14 @@ public class Linha extends FiguraGeometrica {
 
 	public void setPonto2(Ponto ponto2) {
 		this.ponto2 = ponto2;
+	}
+	
+	public void desenhar(Graphics g){
+		g.drawLine(ponto1.x, ponto1.y, ponto2.x, ponto2.y);
+	}
+	
+	public String toString(){
+		return String.format("%d %d %d %d", ponto1.x, ponto1.y, ponto2.x, ponto2.y);
 	}
 	
 	

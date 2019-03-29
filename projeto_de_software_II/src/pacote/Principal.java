@@ -3,6 +3,8 @@ package pacote;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
 
@@ -37,6 +39,7 @@ public final class Principal {
 		return this.lista.getTamanho();
 	}
 	
+	
 	private Principal() {
 		MeuFrame frame = new MeuFrame();
 		JLabel status = new JLabel("Arraste o mouse para desenhar");
@@ -50,10 +53,12 @@ public final class Principal {
 	    JMenu figureMenu = new JMenu("Figure");
 	    JMenuItem figurePonto = new JMenuItem("Ponto");
 	    JMenuItem figureLinha = new JMenuItem("Linha");
+	    JMenuItem figureTriangle = new JMenuItem("Triangulo");
 	    
 		frame.add(status, BorderLayout.SOUTH);
 		frame.add(paineldesenhar, BorderLayout.CENTER);
 		frame.setJMenuBar(menuBar);
+		frame.add(new JLabel("Pressione a Tecla DELETE para apagar o ultimo registro"), BorderLayout.NORTH);
 		menuBar.add(fileMenu);
 		fileMenu.add(newAction);
 	    fileMenu.add(openAction);
@@ -63,6 +68,7 @@ public final class Principal {
 	    menuBar.add(figureMenu);
 	    figureMenu.add(figurePonto);
 	    figureMenu.add(figureLinha);
+	    figureMenu.add(figureTriangle);
 	    
 	    
 		saveAction.addActionListener(new ActionListener() {	
@@ -232,7 +238,47 @@ public final class Principal {
 			}
 		  });
         
+        frame.addKeyListener(new KeyAdapter() {
+            public void keyPressed(KeyEvent event) {
+               if (event.getKeyCode() == KeyEvent.VK_DELETE){
+            	   lista.removerFim();
+            	   paineldesenhar.repaint();
+               }
+            }
+        });
         
+        figurePonto.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(e.getSource() == figurePonto) {
+					paineldesenhar.controleLinha = false;
+					paineldesenhar.controlePonto = true;
+		      }	
+				
+			}
+		});
+        
+        figureLinha.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(e.getSource() == figureLinha) {
+					paineldesenhar.controlePonto = false;
+					paineldesenhar.controleLinha = true;
+					JOptionPane.showMessageDialog(null, "Pressione e Solte para desenhar uma Linha!");
+				}	
+				
+			}
+		});
+        
+        figureTriangle.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(e.getSource() == figureTriangle) {
+					paineldesenhar.controlePonto = false;
+					paineldesenhar.controleLinha = false;
+					paineldesenhar.controleTriangulo = true;
+					JOptionPane.showMessageDialog(null, "Click em 3 pontos diferentes para desenhar um Triangulo!");
+				}	
+				
+			}
+		});  
 		
 	}
 	

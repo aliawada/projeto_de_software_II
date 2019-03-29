@@ -5,8 +5,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 
+import formas.Ponto;
 import lista.encadeada.Iterador;
-import pacote.Ponto;
 import pacote.Principal;
 
 public class Serialize

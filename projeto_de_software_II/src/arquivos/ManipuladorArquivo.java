@@ -7,10 +7,11 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import formas.Linha;
+import formas.Ponto;
+import formas.Triangulo;
 import lista.encadeada.Iterador;
 import pacote.FormaGeometrica;
-import pacote.Linha;
-import pacote.Ponto;
 import pacote.Principal;
 
 public class ManipuladorArquivo {
@@ -27,6 +28,14 @@ public class ManipuladorArquivo {
 					}
 					else if(parts[0].equals("Linha")){
 						Principal.getPrincipal().inserirFim(new Linha(new Ponto(Integer.valueOf(parts[1]), Integer.valueOf(parts[2])), new Ponto(Integer.valueOf(parts[3]), Integer.valueOf(parts[4]))));
+					}
+					else if(parts[0].equals("Triangulo")) {
+						Principal.getPrincipal().inserirFim(new Triangulo(new Linha(new Ponto(Integer.valueOf(parts[1]), Integer.valueOf(parts[2])), 
+																					new Ponto(Integer.valueOf(parts[3]), Integer.valueOf(parts[4]))),
+																		  new Linha(new Ponto(Integer.valueOf(parts[5]), Integer.valueOf(parts[6])), 
+																				  	new Ponto(Integer.valueOf(parts[7]), Integer.valueOf(parts[8]))),
+																		  new Linha(new Ponto(Integer.valueOf(parts[9]), Integer.valueOf(parts[10])), 
+																				  	new Ponto(Integer.valueOf(parts[11]), Integer.valueOf(parts[12])))));
 					}
 				}
 				buffRead.close();

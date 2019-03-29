@@ -6,9 +6,9 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 
+import formas.Ponto;
 import lista.encadeada.Iterador;
 import pacote.FormaGeometrica;
-import pacote.Ponto;
 import pacote.Principal;
 
 public class RandomAcessFile {

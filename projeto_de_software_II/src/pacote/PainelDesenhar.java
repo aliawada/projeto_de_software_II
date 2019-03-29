@@ -10,12 +10,23 @@ import java.awt.event.MouseMotionAdapter;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import formas.Linha;
+import formas.Ponto;
+import formas.Triangulo;
 import lista.encadeada.Iterador;
 
 public class PainelDesenhar extends JPanel {
-	// lista das referências Point
-	//private final ListaEncadeada<Ponto> points;
-
+	Ponto ponto1;
+	Ponto ponto2;
+	Ponto ponto3;
+	Linha linha1;
+	Linha linha2;
+	Linha linha3;
+	//variaveis de controle 
+	public boolean controlePonto = false;
+	public boolean controleLinha = false;
+	public boolean controleTriangulo = false;
+	int mouseClickedCount = 0;
 	// configura GUI e registra rotinas de tratamento de evento de mouse
 	public PainelDesenhar(JLabel status) {
 		// trata evento de movimento de mouse do frame
@@ -31,23 +42,36 @@ public class PainelDesenhar extends JPanel {
 			// armazena coordenadas da ação de arrastar e repinta
 			@Override
 			public void mouseDragged(MouseEvent event) {
-				Principal.getPrincipal().inserirFim(new Linha(new Ponto(event.getPoint().x, event.getPoint().y), new Ponto(event.getPoint().x, event.getPoint().y)));
-				repaint(); // repinta JFrame
+				if(controlePonto == true) {
+				Principal.getPrincipal().inserirFim(new Ponto(event.getPoint().x, event.getPoint().y));
 				status.setText("Dragged in [" + event.getPoint().getX() + "," + event.getPoint().getY() + "]" + " - Tamanho Total = " +  Principal.getPrincipal().getTamanho());
+				repaint(); // repinta JFrame
+				}
 			}
 		});
 			
 			addMouseListener(new MouseListener() {
-
+				
 				@Override
-				public void mouseReleased(MouseEvent e) {
-					
+				public void mouseReleased(MouseEvent event) {
+					if(controleLinha == true) {
+					ponto2 = new Ponto(event.getPoint().x, event.getPoint().y);	
+					Principal.getPrincipal().inserirFim(new Linha(ponto1, ponto2));
+					status.setText("Realeased in [" + event.getPoint().getX() + "," + event.getPoint().getY() + "]" + " - Tamanho Total = " +  Principal.getPrincipal().getTamanho());
+					repaint();
+					}
+						
 				}
 
 				@Override
-				public void mousePressed(MouseEvent e) {
-					// TODO Auto-generated method stub
-
+				public void mousePressed(MouseEvent event) {
+					if(controleLinha == true) {
+					ponto1 = new Ponto(event.getPoint().x, event.getPoint().y);
+					status.setText("Pressed in [" + event.getPoint().getX() + "," + event.getPoint().getY() + "]" + " - Tamanho Total = " +  Principal.getPrincipal().getTamanho());
+					}
+					
+					
+					
 				}
 
 				@Override
@@ -63,16 +87,37 @@ public class PainelDesenhar extends JPanel {
 				}
 
 				@Override
-				public void mouseClicked(MouseEvent e) {
-					// TODO Auto-generated method stub
+				public void mouseClicked(MouseEvent event) {
+					
+					mouseClickedCount++;
+					
+					if(controleTriangulo == true && mouseClickedCount == 1) {
+						ponto1 = new Ponto(event.getPoint().x, event.getPoint().y);
+						status.setText("Clicked One Time in [" + event.getPoint().getX() + "," + event.getPoint().getY() + "]" + " - Tamanho Total = " +  Principal.getPrincipal().getTamanho());
+					} 
+					
+					if(controleTriangulo == true && mouseClickedCount == 2) {
+						ponto2 = new Ponto(event.getPoint().x, event.getPoint().y);	
+						status.setText("Clicked Two Times in [" + event.getPoint().getX() + "," + event.getPoint().getY() + "]" + " - Tamanho Total = " +  Principal.getPrincipal().getTamanho());
+					} 
+					
+					if(controleTriangulo == true && mouseClickedCount == 3) {
+						ponto3 = new Ponto(event.getPoint().x, event.getPoint().y);
+						linha1 = new Linha(ponto1, ponto2);
+						linha2 = new Linha(ponto1, ponto3);
+						linha3 = new Linha(ponto2, ponto3);
+						Principal.getPrincipal().inserirFim(new Triangulo(linha1, linha2, linha3));
+						status.setText("Clicked Three Times in [" + event.getPoint().getX() + "," + event.getPoint().getY() + "]" + " - Tamanho Total = " +  Principal.getPrincipal().getTamanho());
+						repaint();
+						mouseClickedCount = 0;
+					}
 
 				}
 			});
-		super.setBackground(Color.white);
+		super.setBackground(Color.pink);
 	}
 
-	// desenha ovais em um quadro delimitador de 4 x 4 nas localizações
-	// especificadas na janela
+
 	@Override
 	public void paintComponent(Graphics g) {
 
@@ -80,8 +125,7 @@ public class PainelDesenhar extends JPanel {
 		FormaGeometrica forma;
 
 		super.paintComponent(g); // limpa a área de desenho
-
-		// desenha todos os pontos
+		
 		while((forma = it.proximo()) != null) {
 			forma.desenhar(g);
 		}

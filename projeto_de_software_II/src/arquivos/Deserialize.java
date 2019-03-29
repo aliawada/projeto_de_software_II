@@ -5,7 +5,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.ObjectInputStream;
 
-import pacote.Ponto;
+import formas.Ponto;
 import pacote.Principal;
 
 public class Deserialize

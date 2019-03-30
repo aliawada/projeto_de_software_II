@@ -7,8 +7,10 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import formas.Circulo;
 import formas.Linha;
 import formas.Ponto;
+import formas.Retangulo;
 import formas.Triangulo;
 import lista.encadeada.Iterador;
 import pacote.FormaGeometrica;
@@ -27,7 +29,8 @@ public class ManipuladorArquivo {
 					Principal.getPrincipal().inserirFim(new Ponto(Integer.valueOf(parts[1]), Integer.valueOf(parts[2])));
 					}
 					else if(parts[0].equals("Linha")){
-						Principal.getPrincipal().inserirFim(new Linha(new Ponto(Integer.valueOf(parts[1]), Integer.valueOf(parts[2])), new Ponto(Integer.valueOf(parts[3]), Integer.valueOf(parts[4]))));
+						Principal.getPrincipal().inserirFim(new Linha(new Ponto(Integer.valueOf(parts[1]), Integer.valueOf(parts[2])), 
+																	  new Ponto(Integer.valueOf(parts[3]), Integer.valueOf(parts[4]))));
 					}
 					else if(parts[0].equals("Triangulo")) {
 						Principal.getPrincipal().inserirFim(new Triangulo(new Linha(new Ponto(Integer.valueOf(parts[1]), Integer.valueOf(parts[2])), 
@@ -36,6 +39,13 @@ public class ManipuladorArquivo {
 																				  	new Ponto(Integer.valueOf(parts[7]), Integer.valueOf(parts[8]))),
 																		  new Linha(new Ponto(Integer.valueOf(parts[9]), Integer.valueOf(parts[10])), 
 																				  	new Ponto(Integer.valueOf(parts[11]), Integer.valueOf(parts[12])))));
+					}
+					else if(parts[0].equals("Retangulo")) {
+						Principal.getPrincipal().inserirFim(new Retangulo(new Ponto(Integer.valueOf(parts[1]), Integer.valueOf(parts[2])), 
+																		  Integer.valueOf(parts[3]), Integer.valueOf(parts[4])));
+					}
+					else if(parts[0].equals("Circulo")) {
+						Principal.getPrincipal().inserirFim(new Circulo(Integer.valueOf(parts[1]), Integer.valueOf(parts[2]), Integer.valueOf(parts[3])));
 					}
 				}
 				buffRead.close();

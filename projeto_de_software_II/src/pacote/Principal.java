@@ -54,6 +54,8 @@ public final class Principal {
 	    JMenuItem figurePonto = new JMenuItem("Ponto");
 	    JMenuItem figureLinha = new JMenuItem("Linha");
 	    JMenuItem figureTriangle = new JMenuItem("Triangulo");
+	    JMenuItem figureRectangle = new JMenuItem("Retangulo");
+	    JMenuItem figureCircle = new JMenuItem("Circulo");
 	    
 		frame.add(status, BorderLayout.SOUTH);
 		frame.add(paineldesenhar, BorderLayout.CENTER);
@@ -69,7 +71,8 @@ public final class Principal {
 	    figureMenu.add(figurePonto);
 	    figureMenu.add(figureLinha);
 	    figureMenu.add(figureTriangle);
-	    
+	    figureMenu.add(figureRectangle);
+	    figureMenu.add(figureCircle);
 	    
 		saveAction.addActionListener(new ActionListener() {	
 			public void actionPerformed(ActionEvent e) {
@@ -250,10 +253,12 @@ public final class Principal {
         figurePonto.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(e.getSource() == figurePonto) {
-					paineldesenhar.controleLinha = false;
 					paineldesenhar.controlePonto = true;
-		      }	
-				
+					paineldesenhar.controleLinha = false;
+					paineldesenhar.controleTriangulo = false;
+					paineldesenhar.controleRetangulo = false;
+					paineldesenhar.controleCirculo = false;
+		      }
 			}
 		});
         
@@ -262,9 +267,11 @@ public final class Principal {
 				if(e.getSource() == figureLinha) {
 					paineldesenhar.controlePonto = false;
 					paineldesenhar.controleLinha = true;
+					paineldesenhar.controleTriangulo = false;
+					paineldesenhar.controleRetangulo = false;	
+					paineldesenhar.controleCirculo = false;
 					JOptionPane.showMessageDialog(null, "Pressione e Solte para desenhar uma Linha!");
-				}	
-				
+				}
 			}
 		});
         
@@ -274,13 +281,41 @@ public final class Principal {
 					paineldesenhar.controlePonto = false;
 					paineldesenhar.controleLinha = false;
 					paineldesenhar.controleTriangulo = true;
+					paineldesenhar.controleRetangulo = false;	
+					paineldesenhar.controleCirculo = false;
 					JOptionPane.showMessageDialog(null, "Click em 3 pontos diferentes para desenhar um Triangulo!");
 				}	
-				
+			}
+		});  
+        
+        figureRectangle.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(e.getSource() == figureRectangle) {
+					paineldesenhar.controlePonto = false;
+					paineldesenhar.controleLinha = false;
+					paineldesenhar.controleTriangulo = false;
+					paineldesenhar.controleRetangulo = true;	
+					paineldesenhar.controleCirculo = false;
+					JOptionPane.showMessageDialog(null, "Pressione e Solte para desenhar uma diagonal, depois forneça um sen e cos!");
+				}		
+			}
+		}); 
+        
+        figureCircle.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(e.getSource() == figureCircle) {
+					paineldesenhar.controlePonto = false;
+					paineldesenhar.controleLinha = false;
+					paineldesenhar.controleTriangulo = false;
+					paineldesenhar.controleRetangulo = false;
+					paineldesenhar.controleCirculo = true;
+					JOptionPane.showMessageDialog(null, "Pressione no Ponto Central, arraste e solte para determinar o radiano e desenhar um Circulo!");
+				}		
 			}
 		});  
 		
 	}
+	
 	
 	public static Principal getPrincipal() {
 		if(Principal.principal == null)

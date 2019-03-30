@@ -5,10 +5,6 @@ import java.awt.Graphics;
 import pacote.FormaGeometrica;
 
 public class Ponto implements FormaGeometrica {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 	
 	public int x;
 	public int y;

@@ -5,11 +5,6 @@ import java.awt.Graphics;
 import pacote.FormaGeometrica;
 
 public class Linha implements FormaGeometrica {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	
 	Ponto ponto1;
 	Ponto ponto2;
 	

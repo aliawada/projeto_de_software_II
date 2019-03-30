@@ -1,6 +1,7 @@
 package pacote;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -56,6 +57,9 @@ public final class Principal {
 	    JMenuItem figureTriangle = new JMenuItem("Triangulo");
 	    JMenuItem figureRectangle = new JMenuItem("Retangulo");
 	    JMenuItem figureCircle = new JMenuItem("Circulo");
+	    JMenu propriedadesMenu = new JMenu("Propriedades");
+	    JMenuItem colors = new JMenuItem("Cores");
+	    
 	    
 		frame.add(status, BorderLayout.SOUTH);
 		frame.add(paineldesenhar, BorderLayout.CENTER);
@@ -73,6 +77,32 @@ public final class Principal {
 	    figureMenu.add(figureTriangle);
 	    figureMenu.add(figureRectangle);
 	    figureMenu.add(figureCircle);
+	    menuBar.add(propriedadesMenu);
+	    propriedadesMenu.add(colors);
+	    
+	    colors.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(e.getSource() == colors) {
+					int response = corFormas();
+					  
+				   	  if(response == 0) {
+				   		  paineldesenhar.color = Color.red;
+					  }
+				   	  else if(response == 1) {
+				   		paineldesenhar.color = Color.green;
+				   	  }
+				   	  else if(response == 2) {
+				   		paineldesenhar.color = Color.blue;
+				   	  }
+				   	  else if(response == 3) {
+				   		paineldesenhar.color = Color.black;
+				   	  }
+				   	  else if(response == 4) {
+				   		paineldesenhar.color = Color.yellow;
+				   	  }
+				}		
+			}
+		});  
 	    
 		saveAction.addActionListener(new ActionListener() {	
 			public void actionPerformed(ActionEvent e) {
@@ -334,8 +364,22 @@ public final class Principal {
 	    return response;
 	}
 	
+	public static int corFormas() {
+		String[] options = new String[] {"<html><font color=red face=arial><b> Vermelho", 
+										 "<html><font color=green face=arial><b> Verde", 
+										 "<html><font color=blue face=arial><b> Azul", 
+										 "<html><font color=black face=arial><b> Preto", 
+										 "<html><font color=yellow face=arial><b> Amarelo",
+										 "<html><font color=white face=arial><b> Branco"};
+		
+	    int response = JOptionPane.showOptionDialog(null, "Cor das Formas?", "Options",
+	        JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,
+	        null, options, options[0]);
+	    return response;
+	}
+	
 	public static void main(String[] args) {
-			Principal.getPrincipal();	
+			Principal.getPrincipal();
 	}
 
 }

@@ -1,5 +1,6 @@
 package formas;
 
+import java.awt.Color;
 import java.awt.Graphics;
 
 import pacote.FormaGeometrica;

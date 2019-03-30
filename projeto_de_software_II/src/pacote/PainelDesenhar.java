@@ -33,6 +33,7 @@ public class PainelDesenhar extends JPanel {
 	public boolean controleRetangulo = false;
 	public boolean controleCirculo = false;
 	int mouseClickedCount = 0;
+	public Color color = Color.white;
 	
 	// configura GUI e registra rotinas de tratamento de evento de mouse
 	public PainelDesenhar(JLabel status) {
@@ -186,6 +187,7 @@ public class PainelDesenhar extends JPanel {
 		super.paintComponent(g); // limpa a área de desenho
 	
 		while((forma = it.proximo()) != null) {
+			g.setColor(color);
 			forma.desenhar(g);
 		}
 	}

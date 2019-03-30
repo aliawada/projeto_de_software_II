@@ -13,12 +13,13 @@ import formas.Ponto;
 import formas.Retangulo;
 import formas.Triangulo;
 import lista.encadeada.Iterador;
+import pacote.Documento;
 import pacote.FormaGeometrica;
 import pacote.Principal;
 
 public class ManipuladorArquivo {
 		
-		public static void leitor(File file) {
+		public static void leitor(File file, Documento doc) {
 			String string;
 			try {
 				BufferedReader buffRead = new BufferedReader(new FileReader(file));
@@ -26,14 +27,14 @@ public class ManipuladorArquivo {
 					String[] parts = string.split(" ");
 					//if Ponto
 					if(parts[0].equals("Ponto")){
-					Principal.getPrincipal().inserirFim(new Ponto(Integer.valueOf(parts[1]), Integer.valueOf(parts[2])));
+						doc.inserirFim(new Ponto(Integer.valueOf(parts[1]), Integer.valueOf(parts[2])));
 					}
 					else if(parts[0].equals("Linha")){
-						Principal.getPrincipal().inserirFim(new Linha(new Ponto(Integer.valueOf(parts[1]), Integer.valueOf(parts[2])), 
+						doc.inserirFim(new Linha(new Ponto(Integer.valueOf(parts[1]), Integer.valueOf(parts[2])), 
 																	  new Ponto(Integer.valueOf(parts[3]), Integer.valueOf(parts[4]))));
 					}
 					else if(parts[0].equals("Triangulo")) {
-						Principal.getPrincipal().inserirFim(new Triangulo(new Linha(new Ponto(Integer.valueOf(parts[1]), Integer.valueOf(parts[2])), 
+						doc.inserirFim(new Triangulo(new Linha(new Ponto(Integer.valueOf(parts[1]), Integer.valueOf(parts[2])), 
 																					new Ponto(Integer.valueOf(parts[3]), Integer.valueOf(parts[4]))),
 																		  new Linha(new Ponto(Integer.valueOf(parts[5]), Integer.valueOf(parts[6])), 
 																				  	new Ponto(Integer.valueOf(parts[7]), Integer.valueOf(parts[8]))),
@@ -41,11 +42,11 @@ public class ManipuladorArquivo {
 																				  	new Ponto(Integer.valueOf(parts[11]), Integer.valueOf(parts[12])))));
 					}
 					else if(parts[0].equals("Retangulo")) {
-						Principal.getPrincipal().inserirFim(new Retangulo(new Ponto(Integer.valueOf(parts[1]), Integer.valueOf(parts[2])), 
+						doc.inserirFim(new Retangulo(new Ponto(Integer.valueOf(parts[1]), Integer.valueOf(parts[2])), 
 																		  Integer.valueOf(parts[3]), Integer.valueOf(parts[4])));
 					}
 					else if(parts[0].equals("Circulo")) {
-						Principal.getPrincipal().inserirFim(new Circulo(Integer.valueOf(parts[1]), Integer.valueOf(parts[2]), Integer.valueOf(parts[3])));
+						doc.inserirFim(new Circulo(Integer.valueOf(parts[1]), Integer.valueOf(parts[2]), Integer.valueOf(parts[3])));
 					}
 				}
 				buffRead.close();
@@ -59,7 +60,7 @@ public class ManipuladorArquivo {
 				try {
 					BufferedWriter buffWrite = new BufferedWriter(new FileWriter(file,true));
 					String string;   
-				    Iterador<FormaGeometrica> it = Principal.getPrincipal().getIterador();
+				    Iterador<FormaGeometrica> it = Principal.getPrincipal().getDocumentoAtivo().getIterador();
 					FormaGeometrica forma;
 					while((forma = it.proximo()) != null) {
 					string = String.format(forma.getClass().getSimpleName() + " " + forma.toString() + "\r\n");

@@ -20,6 +20,9 @@ import lista.encadeada.Iterador;
 
 @SuppressWarnings("serial")
 public class PainelDesenhar extends JPanel {
+	
+	private Documento doc;
+	
 	Ponto ponto1;
 	Ponto ponto2;
 	Ponto ponto3;
@@ -36,7 +39,8 @@ public class PainelDesenhar extends JPanel {
 	public Color color = Color.white;
 	
 	// configura GUI e registra rotinas de tratamento de evento de mouse
-	public PainelDesenhar(JLabel status) {
+	public PainelDesenhar(JLabel status, Documento doc) {
+		this.doc = doc;
 		// trata evento de movimento de mouse do frame
 		addMouseMotionListener(new MouseMotionAdapter() // classe interna anônima
 		{
@@ -44,15 +48,15 @@ public class PainelDesenhar extends JPanel {
 			@Override
 			public void mouseMoved(MouseEvent event) {
 				super.mouseMoved(event);
-				status.setText("Moved in [" + event.getPoint().getX() + "," + event.getPoint().getY() + "]" + " - Tamanho Total = " + Principal.getPrincipal().getTamanho());
+				status.setText("Moved in [" + event.getPoint().getX() + "," + event.getPoint().getY() + "]" + " - Tamanho Total = " + doc.getTamanho());
 			}
 
 			// armazena coordenadas da ação de arrastar e repinta
 			@Override
 			public void mouseDragged(MouseEvent event) {
 				if(controlePonto == true) {
-				Principal.getPrincipal().inserirFim(new Ponto(event.getPoint().x, event.getPoint().y));
-				status.setText("Dragged in [" + event.getPoint().getX() + "," + event.getPoint().getY() + "]" + " - Tamanho Total = " +  Principal.getPrincipal().getTamanho());
+				doc.inserirFim(new Ponto(event.getPoint().x, event.getPoint().y));
+				status.setText("Dragged in [" + event.getPoint().getX() + "," + event.getPoint().getY() + "]" + " - Tamanho Total = " +  doc.getTamanho());
 				repaint(); // repinta JFrame
 				}
 			}
@@ -62,11 +66,11 @@ public class PainelDesenhar extends JPanel {
 				
 				@Override
 				public void mouseReleased(MouseEvent event) {
-					
+					repaint();
 					if(controleLinha == true) {
 					ponto2 = new Ponto(event.getPoint().x, event.getPoint().y);	
-					Principal.getPrincipal().inserirFim(new Linha(ponto1, ponto2));
-					status.setText("Realeased in [" + event.getPoint().getX() + "," + event.getPoint().getY() + "]" + " - Tamanho Total = " +  Principal.getPrincipal().getTamanho());
+					doc.inserirFim(new Linha(ponto1, ponto2));
+					status.setText("Realeased in [" + event.getPoint().getX() + "," + event.getPoint().getY() + "]" + " - Tamanho Total = " +  doc.getTamanho());
 					repaint();
 					}
 					
@@ -86,8 +90,8 @@ public class PainelDesenhar extends JPanel {
 						int width = (int) Math.round(cos * diagonal);
 						int height = (int) Math.round(sen * diagonal);
 						
-						Principal.getPrincipal().inserirFim(new Retangulo(ponto1, width, height));
-						status.setText("Realeased in [" + event.getPoint().getX() + "," + event.getPoint().getY() + "]" + " - Tamanho Total = " +  Principal.getPrincipal().getTamanho());
+						doc.inserirFim(new Retangulo(ponto1, width, height));
+						status.setText("Realeased in [" + event.getPoint().getX() + "," + event.getPoint().getY() + "]" + " - Tamanho Total = " +  doc.getTamanho());
 						repaint();
 					}
 					
@@ -107,8 +111,8 @@ public class PainelDesenhar extends JPanel {
                         
                         int r = (int) Math.round(radius);
                         
-						Principal.getPrincipal().inserirFim(new Circulo(ponto1.x, ponto1.y, r));
-						status.setText("Realeased in [" + event.getPoint().getX() + "," + event.getPoint().getY() + "]" + " - Tamanho Total = " +  Principal.getPrincipal().getTamanho());
+						doc.inserirFim(new Circulo(ponto1.x, ponto1.y, r));
+						status.setText("Realeased in [" + event.getPoint().getX() + "," + event.getPoint().getY() + "]" + " - Tamanho Total = " +  doc.getTamanho());
 						repaint();
 					}
 						
@@ -116,20 +120,20 @@ public class PainelDesenhar extends JPanel {
 
 				@Override
 				public void mousePressed(MouseEvent event) {
-					
+					repaint();
 					if(controleLinha == true) {
 					ponto1 = new Ponto(event.getPoint().x, event.getPoint().y);
-					status.setText("Pressed in [" + event.getPoint().getX() + "," + event.getPoint().getY() + "]" + " - Tamanho Total = " +  Principal.getPrincipal().getTamanho());			
+					status.setText("Pressed in [" + event.getPoint().getX() + "," + event.getPoint().getY() + "]" + " - Tamanho Total = " +  doc.getTamanho());			
 					}
 					
 					if(controleRetangulo == true) {
 						ponto1 = new Ponto(event.getPoint().x, event.getPoint().y);
-						status.setText("Pressed in [" + event.getPoint().getX() + "," + event.getPoint().getY() + "]" + " - Tamanho Total = " +  Principal.getPrincipal().getTamanho());			
+						status.setText("Pressed in [" + event.getPoint().getX() + "," + event.getPoint().getY() + "]" + " - Tamanho Total = " +  doc.getTamanho());			
 					}
 					
 					if(controleCirculo == true) {
 						ponto1 = new Ponto(event.getPoint().x, event.getPoint().y);
-						status.setText("Pressed in [" + event.getPoint().getX() + "," + event.getPoint().getY() + "]" + " - Tamanho Total = " +  Principal.getPrincipal().getTamanho());			
+						status.setText("Pressed in [" + event.getPoint().getX() + "," + event.getPoint().getY() + "]" + " - Tamanho Total = " +  doc.getTamanho());			
 					}
 					
 				}
@@ -153,12 +157,12 @@ public class PainelDesenhar extends JPanel {
 					
 					if(controleTriangulo == true && mouseClickedCount == 1) {
 						ponto1 = new Ponto(event.getPoint().x, event.getPoint().y);
-						status.setText("Clicked One Time in [" + event.getPoint().getX() + "," + event.getPoint().getY() + "]" + " - Tamanho Total = " +  Principal.getPrincipal().getTamanho());
+						status.setText("Clicked One Time in [" + event.getPoint().getX() + "," + event.getPoint().getY() + "]" + " - Tamanho Total = " +  doc.getTamanho());
 					} 
 					
 					if(controleTriangulo == true && mouseClickedCount == 2) {
 						ponto2 = new Ponto(event.getPoint().x, event.getPoint().y);	
-						status.setText("Clicked Two Times in [" + event.getPoint().getX() + "," + event.getPoint().getY() + "]" + " - Tamanho Total = " +  Principal.getPrincipal().getTamanho());
+						status.setText("Clicked Two Times in [" + event.getPoint().getX() + "," + event.getPoint().getY() + "]" + " - Tamanho Total = " +  doc.getTamanho());
 					} 
 					
 					if(controleTriangulo == true && mouseClickedCount == 3) {
@@ -166,8 +170,8 @@ public class PainelDesenhar extends JPanel {
 						linha1 = new Linha(ponto1, ponto2);
 						linha2 = new Linha(ponto1, ponto3);
 						linha3 = new Linha(ponto2, ponto3);
-						Principal.getPrincipal().inserirFim(new Triangulo(linha1, linha2, linha3));
-						status.setText("Clicked Three Times in [" + event.getPoint().getX() + "," + event.getPoint().getY() + "]" + " - Tamanho Total = " +  Principal.getPrincipal().getTamanho());
+						doc.inserirFim(new Triangulo(linha1, linha2, linha3));
+						status.setText("Clicked Three Times in [" + event.getPoint().getX() + "," + event.getPoint().getY() + "]" + " - Tamanho Total = " +  doc.getTamanho());
 						repaint();
 						mouseClickedCount = 0;
 					}
@@ -181,7 +185,7 @@ public class PainelDesenhar extends JPanel {
 	@Override
 	public void paintComponent(Graphics g) {
 
-		Iterador<FormaGeometrica> it = Principal.getPrincipal().getIterador();
+		Iterador<FormaGeometrica> it = doc.getIterador();
 		FormaGeometrica forma;
 
 		super.paintComponent(g); // limpa a área de desenho

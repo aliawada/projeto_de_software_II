@@ -177,7 +177,8 @@ public class MeuFrame extends JFrame{
 					paineldesenhar.controleTriangulo = false;
 					paineldesenhar.controleRetangulo = true;	
 					paineldesenhar.controleCirculo = false;
-					JOptionPane.showMessageDialog(null, "Pressione e Solte para desenhar uma diagonal, depois forneça um sen e cos!");
+					JOptionPane.showMessageDialog(null, "Click em 3 pontos diferentes para desenhar um Triangulo!\n"
+							+ "1- Onde começa\n" + "2- width" + "3- height");
 				}		
 			}
 		}); 

@@ -35,7 +35,10 @@ public class PainelDesenhar extends JPanel {
 	public boolean controleTriangulo = false;
 	public boolean controleRetangulo = false;
 	public boolean controleCirculo = false;
-	int mouseClickedCount = 0;
+	public boolean mouseDragged = false;
+	int mouseClickedCountTriang = 0;
+	int mouseClickedCountRetang = 0;
+	private int width;
 	public Color color = Color.white;
 	
 	// configura GUI e registra rotinas de tratamento de evento de mouse
@@ -74,27 +77,7 @@ public class PainelDesenhar extends JPanel {
 					repaint();
 					}
 					
-				    if(controleRetangulo == true) {
-						//calcular altura e largura usando seno e cosseno
-						ponto2 = new Ponto(event.getPoint().x, event.getPoint().y);	
-						double aux = ponto2.x - ponto1.x;
-						double aux2 = ponto2.y - ponto1.y;
-						double diagonal = Math.sqrt(Math.pow(aux, 2) + Math.pow(aux2, 2));
-						int anguloSen = Integer.parseInt(JOptionPane.showInputDialog(null,"Valor inteiro do seno?", JOptionPane.INFORMATION_MESSAGE));
-						int anguloCos = Integer.parseInt(JOptionPane.showInputDialog(null,"Valor inteiro do cosseno?", JOptionPane.INFORMATION_MESSAGE));
-						double anguloEmRadianoSen = Math.toRadians(anguloSen);
-						double anguloEmRadianoCos = Math.toRadians(anguloCos);
-						double sen = Math.sin(anguloEmRadianoSen);
-						double cos = Math.cos(anguloEmRadianoCos);
-						
-						int width = (int) Math.round(cos * diagonal);
-						int height = (int) Math.round(sen * diagonal);
-						
-						doc.inserirFim(new Retangulo(ponto1, width, height));
-						status.setText("Realeased in [" + event.getPoint().getX() + "," + event.getPoint().getY() + "]" + " - Tamanho Total = " +  doc.getTamanho());
-						repaint();
-					}
-					
+				    
 				    if(controleCirculo == true) {
 						//Calcula o radiano
 						ponto2 = new Ponto(event.getPoint().x, event.getPoint().y);
@@ -113,7 +96,6 @@ public class PainelDesenhar extends JPanel {
                         
 						doc.inserirFim(new Circulo(ponto1.x, ponto1.y, r));
 						status.setText("Realeased in [" + event.getPoint().getX() + "," + event.getPoint().getY() + "]" + " - Tamanho Total = " +  doc.getTamanho());
-						repaint();
 					}
 						
 				}
@@ -126,10 +108,6 @@ public class PainelDesenhar extends JPanel {
 					status.setText("Pressed in [" + event.getPoint().getX() + "," + event.getPoint().getY() + "]" + " - Tamanho Total = " +  doc.getTamanho());			
 					}
 					
-					if(controleRetangulo == true) {
-						ponto1 = new Ponto(event.getPoint().x, event.getPoint().y);
-						status.setText("Pressed in [" + event.getPoint().getX() + "," + event.getPoint().getY() + "]" + " - Tamanho Total = " +  doc.getTamanho());			
-					}
 					
 					if(controleCirculo == true) {
 						ponto1 = new Ponto(event.getPoint().x, event.getPoint().y);
@@ -153,19 +131,20 @@ public class PainelDesenhar extends JPanel {
 				@Override
 				public void mouseClicked(MouseEvent event) {
 					
-					mouseClickedCount++;
+					mouseClickedCountTriang++;
+					mouseClickedCountRetang++;
 					
-					if(controleTriangulo == true && mouseClickedCount == 1) {
+					if(controleTriangulo == true && mouseClickedCountTriang == 1) {
 						ponto1 = new Ponto(event.getPoint().x, event.getPoint().y);
 						status.setText("Clicked One Time in [" + event.getPoint().getX() + "," + event.getPoint().getY() + "]" + " - Tamanho Total = " +  doc.getTamanho());
 					} 
 					
-					if(controleTriangulo == true && mouseClickedCount == 2) {
+					if(controleTriangulo == true && mouseClickedCountTriang == 2) {
 						ponto2 = new Ponto(event.getPoint().x, event.getPoint().y);	
 						status.setText("Clicked Two Times in [" + event.getPoint().getX() + "," + event.getPoint().getY() + "]" + " - Tamanho Total = " +  doc.getTamanho());
 					} 
 					
-					if(controleTriangulo == true && mouseClickedCount == 3) {
+					if(controleTriangulo == true && mouseClickedCountTriang == 3) {
 						ponto3 = new Ponto(event.getPoint().x, event.getPoint().y);
 						linha1 = new Linha(ponto1, ponto2);
 						linha2 = new Linha(ponto1, ponto3);
@@ -173,7 +152,47 @@ public class PainelDesenhar extends JPanel {
 						doc.inserirFim(new Triangulo(linha1, linha2, linha3));
 						status.setText("Clicked Three Times in [" + event.getPoint().getX() + "," + event.getPoint().getY() + "]" + " - Tamanho Total = " +  doc.getTamanho());
 						repaint();
-						mouseClickedCount = 0;
+						mouseClickedCountTriang = 0;
+					}
+					
+					
+					if(controleRetangulo == true && mouseClickedCountRetang == 1) {
+						ponto1 = new Ponto(event.getPoint().x, event.getPoint().y);
+						status.setText("Clicked One Time in [" + event.getPoint().getX() + "," + event.getPoint().getY() + "]" + " - Tamanho Total = " +  doc.getTamanho());			
+					}
+					
+					
+					if(controleRetangulo == true && mouseClickedCountRetang == 2) {
+				    	
+				    	ponto2 = new Ponto(event.getPoint().x, event.getPoint().y);
+				    	
+				    	
+						int aux = ponto2.x - ponto1.x;
+						int aux2 = ponto2.y - ponto1.y;
+						double w = Math.sqrt(Math.pow(aux, 2) + Math.pow(aux2, 2));
+						
+						width = (int) Math.round(w);
+						
+						mouseDragged = true;
+						status.setText("Clicked Two Times in [" + event.getPoint().getX() + "," + event.getPoint().getY() + "]" + " - Tamanho Total = " +  doc.getTamanho());
+						repaint();
+					}
+					
+					
+					
+					if(controleRetangulo == true && mouseClickedCountRetang == 3) {
+						ponto3 = new Ponto(event.getPoint().x, event.getPoint().y);
+						
+						int aux = ponto3.x - ponto2.x;
+						int aux2 = ponto3.y - ponto2.y;
+						double h = Math.sqrt(Math.pow(aux, 2) + Math.pow(aux2, 2));
+						
+						int height = (int) Math.round(h);
+						
+						doc.inserirFim(new Retangulo(ponto1, width, height));
+						status.setText("Clicked Three Times in [" + event.getPoint().getX() + "," + event.getPoint().getY() + "]" + " - Tamanho Total = " +  doc.getTamanho());
+						repaint();
+						mouseClickedCountRetang = 0;
 					}
 
 				}

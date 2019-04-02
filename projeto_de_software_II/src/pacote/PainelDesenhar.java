@@ -8,7 +8,6 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionAdapter;
 
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import formas.Circulo;
@@ -153,6 +152,7 @@ public class PainelDesenhar extends JPanel {
 						status.setText("Clicked Three Times in [" + event.getPoint().getX() + "," + event.getPoint().getY() + "]" + " - Tamanho Total = " +  doc.getTamanho());
 						repaint();
 						mouseClickedCountTriang = 0;
+						mouseClickedCountRetang = 0;
 					}
 					
 					
@@ -166,14 +166,12 @@ public class PainelDesenhar extends JPanel {
 				    	
 				    	ponto2 = new Ponto(event.getPoint().x, event.getPoint().y);
 				    	
-				    	
 						int aux = ponto2.x - ponto1.x;
 						int aux2 = ponto2.y - ponto1.y;
 						double w = Math.sqrt(Math.pow(aux, 2) + Math.pow(aux2, 2));
 						
 						width = (int) Math.round(w);
 						
-						mouseDragged = true;
 						status.setText("Clicked Two Times in [" + event.getPoint().getX() + "," + event.getPoint().getY() + "]" + " - Tamanho Total = " +  doc.getTamanho());
 						repaint();
 					}
@@ -193,6 +191,7 @@ public class PainelDesenhar extends JPanel {
 						status.setText("Clicked Three Times in [" + event.getPoint().getX() + "," + event.getPoint().getY() + "]" + " - Tamanho Total = " +  doc.getTamanho());
 						repaint();
 						mouseClickedCountRetang = 0;
+						mouseClickedCountTriang = 0;
 					}
 
 				}

@@ -28,6 +28,7 @@ public class MeuFrame extends JFrame{
 		
 		JLabel status = new JLabel("Arraste o mouse para desenhar");
 		PainelDesenhar paineldesenhar = new PainelDesenhar(status, doc);
+		PainelTexto paineltexto = new PainelTexto(doc);
 		JMenuBar menuBar = new JMenuBar();
 		JMenu fileMenu = new JMenu("File");
 		JMenuItem newAction = new JMenuItem("New");
@@ -48,6 +49,7 @@ public class MeuFrame extends JFrame{
 		this.add(paineldesenhar, BorderLayout.CENTER);
 		this.setJMenuBar(menuBar);
 		this.add(new JLabel("Pressione a Tecla DELETE para apagar o ultimo registro"), BorderLayout.NORTH);
+		this.add(paineltexto, BorderLayout.WEST);
 		menuBar.add(fileMenu);
 		fileMenu.add(newAction);
 	    fileMenu.add(openAction);
@@ -62,6 +64,12 @@ public class MeuFrame extends JFrame{
 	    figureMenu.add(figureCircle);
 	    menuBar.add(propriedadesMenu);
 	    propriedadesMenu.add(colors);
+	    
+	    paineltexto.setEditable(false);
+	   
+	    
+	    doc.adicionaOuvinte(paineldesenhar);
+	    doc.adicionaOuvinte(paineltexto);
 	    
 	    colors.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {

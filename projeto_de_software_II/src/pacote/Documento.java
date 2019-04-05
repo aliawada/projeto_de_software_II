@@ -16,20 +16,45 @@ public class Documento {
 	
 	private ListaEncadeada<FormaGeometrica> lista;
 	
+	private ListaEncadeada<OuvintePaineis> listaOuvintes;
+	
 	public Documento(){
 		this.lista = new ListaEncadeada<FormaGeometrica>();
+		this.listaOuvintes = new ListaEncadeada<OuvintePaineis>();
 	}
 	
 	public void inserirFim(FormaGeometrica forma) {
 		this.lista.inserirFim(forma);
+		atualizaOuvinte();
 	}
 	
 	public Iterador<FormaGeometrica> getIterador() {
-		return this.lista.getInicio();
+		return this.lista.getInicio();	
 	}
 	
 	public Integer getTamanho() {
 		return this.lista.getTamanho();
+	}
+	
+	// Metodo Attach(Observer) do padrão Observer
+		public void adicionaOuvinte(OuvintePaineis view) {
+			listaOuvintes.inserirFim(view);
+			atualizaOuvinte();
+		}
+
+		// Metodo Detach(Observer) do padrão Observer
+		public void removeOuvinte(OuvintePaineis view) {
+			listaOuvintes.removerOuvinte(view);
+			atualizaOuvinte();
+		}
+	
+	public void atualizaOuvinte() {
+		Iterador<OuvintePaineis> i = listaOuvintes.getInicio();
+		OuvintePaineis view;
+		while ((view = (OuvintePaineis) i.proximo()) != null) {
+			// Invoca o metodo Update do objeto Observer
+			view.atualizar();
+		}
 	}
  
 	   

@@ -204,6 +204,34 @@ public class ListaEncadeada<TIPO> {
 		return dado;
 	}
 
+	public TIPO removerOuvinte(TIPO obj) {
+		if (obj == null)
+			return null;
+
+		if (obj == inicio.dado) { // remover inicio
+			return removerInicio();
+		}
+
+		if (obj == fim.dado) { // remover o fim
+			return removerFim();
+		}
+
+		No aux = inicio;
+
+		// remover no do meio da lista
+		while (obj != aux.dado) {
+			aux = aux.proximo;
+		}
+
+		TIPO dado = aux.dado;
+
+		aux.anterior.proximo = aux.proximo;
+		aux.proximo.anterior = aux.anterior;
+
+		tamanho--;
+		return dado;
+	}
+	
 	public TIPO pesquisar(int pos) {
 		No aux = inicio;
 		int cont = 1;

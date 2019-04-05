@@ -18,7 +18,7 @@ import formas.Triangulo;
 import lista.encadeada.Iterador;
 
 @SuppressWarnings("serial")
-public class PainelDesenhar extends JPanel {
+public class PainelDesenhar extends JPanel implements OuvintePaineis {
 	
 	private Documento doc;
 	
@@ -59,7 +59,7 @@ public class PainelDesenhar extends JPanel {
 				if(controlePonto == true) {
 				doc.inserirFim(new Ponto(event.getPoint().x, event.getPoint().y));
 				status.setText("Dragged in [" + event.getPoint().getX() + "," + event.getPoint().getY() + "]" + " - Tamanho Total = " +  doc.getTamanho());
-				repaint(); // repinta JFrame
+				atualizar(); // repinta JFrame
 				}
 			}
 		});
@@ -68,12 +68,12 @@ public class PainelDesenhar extends JPanel {
 				
 				@Override
 				public void mouseReleased(MouseEvent event) {
-					repaint();
+					
 					if(controleLinha == true) {
 					ponto2 = new Ponto(event.getPoint().x, event.getPoint().y);	
 					doc.inserirFim(new Linha(ponto1, ponto2));
 					status.setText("Realeased in [" + event.getPoint().getX() + "," + event.getPoint().getY() + "]" + " - Tamanho Total = " +  doc.getTamanho());
-					repaint();
+					atualizar();
 					}
 					
 				    
@@ -95,6 +95,7 @@ public class PainelDesenhar extends JPanel {
                         
 						doc.inserirFim(new Circulo(ponto1.x, ponto1.y, r));
 						status.setText("Realeased in [" + event.getPoint().getX() + "," + event.getPoint().getY() + "]" + " - Tamanho Total = " +  doc.getTamanho());
+						atualizar();
 					}
 						
 				}
@@ -150,7 +151,7 @@ public class PainelDesenhar extends JPanel {
 						linha3 = new Linha(ponto2, ponto3);
 						doc.inserirFim(new Triangulo(linha1, linha2, linha3));
 						status.setText("Clicked Three Times in [" + event.getPoint().getX() + "," + event.getPoint().getY() + "]" + " - Tamanho Total = " +  doc.getTamanho());
-						repaint();
+						atualizar();
 						mouseClickedCountTriang = 0;
 						mouseClickedCountRetang = 0;
 					}
@@ -173,7 +174,7 @@ public class PainelDesenhar extends JPanel {
 						width = (int) Math.round(w);
 						
 						status.setText("Clicked Two Times in [" + event.getPoint().getX() + "," + event.getPoint().getY() + "]" + " - Tamanho Total = " +  doc.getTamanho());
-						repaint();
+						atualizar();
 					}
 					
 					
@@ -189,7 +190,7 @@ public class PainelDesenhar extends JPanel {
 						
 						doc.inserirFim(new Retangulo(ponto1, width, height));
 						status.setText("Clicked Three Times in [" + event.getPoint().getX() + "," + event.getPoint().getY() + "]" + " - Tamanho Total = " +  doc.getTamanho());
-						repaint();
+						atualizar();
 						mouseClickedCountRetang = 0;
 						mouseClickedCountTriang = 0;
 					}
@@ -212,6 +213,21 @@ public class PainelDesenhar extends JPanel {
 			g.setColor(color);
 			forma.desenhar(g);
 		}
+	}
+
+
+	@Override
+	public void novaFormaGeometrica(FormaGeometrica forma) {
+		doc.inserirFim(forma);
+		
+	}
+
+
+	@Override
+	public void atualizar() {
+		getParent().revalidate();
+		repaint();
+		
 	}
 
 }// fim da classe PaintPanel

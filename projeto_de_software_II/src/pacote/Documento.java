@@ -18,6 +18,8 @@ public class Documento {
 	
 	private ListaEncadeada<OuvintePaineis> listaOuvintes;
 	
+	File file;
+	
 	public Documento(){
 		this.lista = new ListaEncadeada<FormaGeometrica>();
 		this.listaOuvintes = new ListaEncadeada<OuvintePaineis>();
@@ -63,34 +65,49 @@ public class Documento {
 			
 			//Arquivo Texto
 		    if(option == 0) {
-				String path = JOptionPane.showInputDialog(null,"Nome do Arquivo de Texto que deseja salvar?", JOptionPane.INFORMATION_MESSAGE);
-				File file = new File(System.getProperty("user.dir") + "/" +  path + ".txt");
-				if(!file.exists()) {
-					JOptionPane.showMessageDialog(null, "Arquivo de Texto não existe!");
-				} else {
-			    ManipuladorArquivo.escritor(file);
+				try {
+					   if(this.file == null) {
+			    		String path = JOptionPane.showInputDialog(null,"Nome do Arquivo de Texto?", JOptionPane.INFORMATION_MESSAGE);
+			    		this.file = new File(System.getProperty("user.dir") + "/" +  path + ".txt");
+			    		this.file.createNewFile();
+			    		ManipuladorArquivo.escritor(this.file, this);
+			    	} else {
+			    		ManipuladorArquivo.escritor(this.file, this);
+					}
+				} catch(Exception e) {
+					e.printStackTrace();
 				}
 			  }
 		    
 		    //Arquivo Serializable
 		    if(option == 1) {
+		    	try {
+		    	if(this.file == null) {
 		    	String path = JOptionPane.showInputDialog(null,"Nome do Arquivo Serializado que deseja salvar?", JOptionPane.INFORMATION_MESSAGE);
-				File file = new File(System.getProperty("user.dir") + "/" +  path + ".ser");
-				if(!file.exists()) {
-					JOptionPane.showMessageDialog(null, "Arquivo Serializado não existe!");
+				this.file = new File(System.getProperty("user.dir") + "/" +  path + ".ser");
+				this.file.createNewFile();
+				Serialize.serialize(this.file, this);
 				} else {
-					Serialize.serialize(file);
+					Serialize.serialize(file, this);
+				}
+				} catch(Exception e) {
+					e.printStackTrace();
 				}
 		    }
 		    
 		    //Arquivo Binário
 		    if(option == 2) {
+		    	try {
+			    if(this.file == null) {
 		    	String path = JOptionPane.showInputDialog(null,"Nome do Arquivo Binário que deseja salvar?", JOptionPane.INFORMATION_MESSAGE);
-				File file = new File(System.getProperty("user.dir") + "/" +  path + ".txt");
-				if(!file.exists()) {
-					JOptionPane.showMessageDialog(null, "Arquivo Binário não existe!");
+				this.file = new File(System.getProperty("user.dir") + "/" +  path + ".txt");
+				this.file.createNewFile();
+				RandomAcessFile.escreverRAF(this.file, this);
 				} else {
-					RandomAcessFile.escreverRAF(file);
+					RandomAcessFile.escreverRAF(this.file, this);
+				}
+			    } catch(Exception e) {
+					e.printStackTrace();
 				}
 		    }
 		    
@@ -102,39 +119,42 @@ public class Documento {
 	   
 	   public void lerFormas(){
 		   int option = tipoArquivo();
-			//Arquivo Texto
-		    if(option == 0) {
-			String path = JOptionPane.showInputDialog(null,"Nome do Arquivo de Texto que deseja abrir?", JOptionPane.INFORMATION_MESSAGE);
-			File openFile = new File(System.getProperty("user.dir") + "/" +  path + ".txt");
-				if(!openFile.exists()) {
+				//Arquivo Texto
+			    if(option == 0) {
+				String path = JOptionPane.showInputDialog(null,"Nome do Arquivo de Texto que deseja abrir?", JOptionPane.INFORMATION_MESSAGE);
+				this.file = new File(System.getProperty("user.dir") + "/" +  path + ".txt");
+				if(!this.file.exists()) {
 					JOptionPane.showMessageDialog(null, "Arquivo não existe!");
+					this.file = null;
 				} else {
 				lista.limparLista();
-				ManipuladorArquivo.leitor(openFile, Principal.getPrincipal().getDocumentoAtivo());
+				ManipuladorArquivo.leitor(this.file, this);
 				}		
 		    }
 		
 			 //Arquivo Serializable
 		    if(option == 1) {
 		    	String path = JOptionPane.showInputDialog(null,"Nome do Arquivo Serializado que deseja abrir?", JOptionPane.INFORMATION_MESSAGE);
-				File openFile = new File(System.getProperty("user.dir") + "/" +  path + ".ser");
-				if(!openFile.exists()) {
+				this.file = new File(System.getProperty("user.dir") + "/" +  path + ".ser");
+				if(!this.file.exists()) {
 					JOptionPane.showMessageDialog(null, "Arquivo não existe!");
-				} else {
+					this.file = null;
+				} else if(this.file.exists()) {
 					lista.limparLista();
-					Deserialize.deserialize(openFile);
+					Deserialize.deserialize(this.file, this);
 				}
 		    }
 		    
 		    //Arquivo Binário
 		    if(option == 2) {
 		    	String path = JOptionPane.showInputDialog(null,"Nome do Arquivo Binário que deseja abrir?", JOptionPane.INFORMATION_MESSAGE);
-				File openFile = new File(System.getProperty("user.dir") + "/" +  path + ".txt");
-					if(!openFile.exists()) {
+				this.file = new File(System.getProperty("user.dir") + "/" +  path + ".txt");
+					if(!this.file.exists()) {
 						JOptionPane.showMessageDialog(null, "Arquivo não existe!");
+						this.file = null;
 					} else {
 					lista.limparLista();
-					RandomAcessFile.lerRAF(openFile);
+					RandomAcessFile.lerRAF(this.file, this);
 					
 					}		
 		    }
@@ -151,10 +171,10 @@ public class Documento {
 		    if(option == 0) {
 			try {
 				String path = JOptionPane.showInputDialog(null,"Nome do Arquivo de Texto que deseja criar?", JOptionPane.INFORMATION_MESSAGE);
-				File newFile = new File(System.getProperty("user.dir") + "/" +  path + ".txt");
-				newFile.createNewFile();
+				this.file = new File(System.getProperty("user.dir") + "/" +  path + ".txt");
+				this.file.createNewFile();
 				lista.limparLista();
-				ManipuladorArquivo.leitor(newFile, Principal.getPrincipal().getDocumentoAtivo());
+				ManipuladorArquivo.leitor(this.file, this);
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}	
@@ -167,7 +187,7 @@ public class Documento {
 					File newFile = new File(System.getProperty("user.dir") + "/" +  path + ".ser");
 					newFile.createNewFile();
 					lista.limparLista();
-					Serialize.serialize(newFile);
+					Serialize.serialize(newFile, this);
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}	
@@ -181,7 +201,7 @@ public class Documento {
 					File newFile = new File(System.getProperty("user.dir") + "/" +  path + ".txt");
 					newFile.createNewFile();
 					lista.limparLista();
-					RandomAcessFile.escreverRAF(newFile);
+					RandomAcessFile.escreverRAF(newFile, this);
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}	

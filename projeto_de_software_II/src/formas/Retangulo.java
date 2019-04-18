@@ -1,10 +1,12 @@
 package formas;
 
 import java.awt.Graphics;
+import java.io.Serializable;
 
 import pacote.FormaGeometrica;
 
-public class Retangulo implements FormaGeometrica {
+@SuppressWarnings("serial")
+public class Retangulo implements FormaGeometrica,Serializable {
 	Ponto ponto;
 	int w;
 	int h;

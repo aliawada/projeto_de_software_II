@@ -1,11 +1,12 @@
 package formas;
 
-import java.awt.Color;
 import java.awt.Graphics;
+import java.io.Serializable;
 
 import pacote.FormaGeometrica;
 
-public class Triangulo implements FormaGeometrica {
+@SuppressWarnings("serial")
+public class Triangulo implements FormaGeometrica,Serializable {
 	Linha linha1;
 	Linha linha2;
 	Linha linha3;

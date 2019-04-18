@@ -56,11 +56,11 @@ public class ManipuladorArquivo {
 			}
 		}
 		
-		   public static void escritor(File file)  {
+		   public static void escritor(File file, Documento doc)  {
 				try {
 					BufferedWriter buffWrite = new BufferedWriter(new FileWriter(file,true));
 					String string;   
-				    Iterador<FormaGeometrica> it = Principal.getPrincipal().getDocumentoAtivo().getIterador();
+				    Iterador<FormaGeometrica> it = doc.getIterador();
 					FormaGeometrica forma;
 					while((forma = it.proximo()) != null) {
 					string = String.format(forma.getClass().getSimpleName() + " " + forma.toString() + "\r\n");

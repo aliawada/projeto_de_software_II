@@ -5,23 +5,24 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 
-import formas.Ponto;
 import lista.encadeada.Iterador;
-import pacote.Principal;
+import pacote.Documento;
+import pacote.FormaGeometrica;
 
 public class Serialize
 {	
-	public static void serialize(File file) {
+	public static void serialize(File file, Documento doc) {
       try
       {
          FileOutputStream fileOut = new FileOutputStream(file);
          ObjectOutputStream out = new ObjectOutputStream(fileOut);
       
- 		 Iterador<Ponto> it = Principal.getPrincipal().getIterador();
-         Ponto ponto;
+ 		 Iterador<FormaGeometrica> it = doc.getIterador();
+ 		 FormaGeometrica forma;
          
- 		 while((ponto = it.proximo()) != null) {
-         out.writeObject(new Ponto(ponto.x,ponto.y));
+ 		 while((forma = it.proximo()) != null) {
+         out.writeObject(forma.getClass().getSimpleName() + " " + forma.toString());
+         
  		 }
  		 
          out.close();

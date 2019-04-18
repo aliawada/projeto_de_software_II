@@ -1,10 +1,12 @@
 package formas;
 
 import java.awt.Graphics;
+import java.io.Serializable;
 
 import pacote.FormaGeometrica;
 
-public class Circulo implements FormaGeometrica{
+@SuppressWarnings("serial")
+public class Circulo implements FormaGeometrica,Serializable {
 	int x,y;
 	int r;
 	

@@ -1,10 +1,12 @@
 package formas;
 
 import java.awt.Graphics;
+import java.io.Serializable;
 
 import pacote.FormaGeometrica;
 
-public class Linha implements FormaGeometrica {
+@SuppressWarnings("serial")
+public class Linha implements FormaGeometrica,Serializable {
 	Ponto ponto1;
 	Ponto ponto2;
 	

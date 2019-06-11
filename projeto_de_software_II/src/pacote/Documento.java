@@ -1,5 +1,7 @@
 package pacote;
 
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
 
@@ -11,6 +13,7 @@ import arquivos.RandomAcessFile;
 import arquivos.Serialize;
 import lista.encadeada.Iterador;
 import lista.encadeada.ListaEncadeada;
+import visualizacao.FrameBancoDeDados;
 
 public class Documento {
 	
@@ -19,6 +22,7 @@ public class Documento {
 	private ListaEncadeada<OuvintePaineis> listaOuvintes;
 	
 	File file;
+	
 	
 	public Documento(){
 		this.lista = new ListaEncadeada<FormaGeometrica>();
@@ -37,6 +41,13 @@ public class Documento {
 	public Integer getTamanho() {
 		return this.lista.getTamanho();
 	}
+	
+	public ListaEncadeada<FormaGeometrica> getListaFormas() {
+        return lista;
+    }
+    public void setListaFormas(ListaEncadeada<FormaGeometrica> lista) {
+        this.lista = lista;
+    }
 	
 	// Metodo Attach(Observer) do padrão Observer
 		public void adicionaOuvinte(OuvintePaineis view) {
@@ -212,6 +223,26 @@ public class Documento {
 		    	JOptionPane.showMessageDialog(null, "Não foi possível CRIAR! um novo Arquivo");
 		    }
 	   }
+	  
+	   public void salvarDesenho() {
+		   
+	   }
+	   
+	   public void abrirFrameBD(FrameBancoDeDados frameBD) {
+	        frameBD.addWindowListener(new WindowAdapter() {
+
+	            @Override
+	            public void windowClosing(WindowEvent e) {
+//	                doc.removeOuvinte(panelTexto);
+//	                frameTabela = null;
+	            	frameBD.dispose();
+	            }
+
+	        });
+	        frameBD.setVisible(true);
+	   }
+	   
+	   
 	   
 	   public void crtlZ(){
 		   lista.removerFim();

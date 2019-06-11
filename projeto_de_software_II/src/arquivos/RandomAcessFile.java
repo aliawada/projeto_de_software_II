@@ -33,7 +33,7 @@ public class RandomAcessFile {
 	        FormaGeometrica forma;
 			
 	        while((forma = it.proximo()) != null) {
-	        String string = forma.getClass().getSimpleName() + " " + forma.toString();
+	        String string = forma.getClass().getSimpleName() + " " + forma.toStringArq();
 	        String[] parts = string.split(" ");
 	        
 	        if(parts[0].equals("Ponto")){
@@ -56,12 +56,6 @@ public class RandomAcessFile {
 				raf.writeInt(Integer.valueOf(parts[4]));
 				raf.writeInt(Integer.valueOf(parts[5]));
 				raf.writeInt(Integer.valueOf(parts[6]));
-				raf.writeInt(Integer.valueOf(parts[7]));
-				raf.writeInt(Integer.valueOf(parts[8]));
-				raf.writeInt(Integer.valueOf(parts[9]));
-				raf.writeInt(Integer.valueOf(parts[10]));
-				raf.writeInt(Integer.valueOf(parts[11]));
-				raf.writeInt(Integer.valueOf(parts[12]));
 			}
 			else if(parts[0].equals("Retangulo")) {
 				raf.writeByte(4);
@@ -75,6 +69,7 @@ public class RandomAcessFile {
 				raf.writeInt(Integer.valueOf(parts[1]));
 				raf.writeInt(Integer.valueOf(parts[2]));
 				raf.writeInt(Integer.valueOf(parts[3]));
+				raf.writeInt(Integer.valueOf(parts[4]));
 			}
 	      }
 	      raf.close();
@@ -102,19 +97,17 @@ public class RandomAcessFile {
 						  new Ponto(raf.readInt(), raf.readInt())));
 		      }
 		      else if(forma == 3) {
-		    	  doc.inserirFim(new Triangulo(new Linha(new Ponto(raf.readInt(), raf.readInt()),
-		    			  								 new Ponto(raf.readInt(), raf.readInt())),
-		    			  					   new Linha(new Ponto(raf.readInt(), raf.readInt()),
-		    			  							   	 new Ponto(raf.readInt(), raf.readInt())),
-		    			  					   new Linha(new Ponto(raf.readInt(), raf.readInt()),
-		    			  							     new Ponto(raf.readInt(), raf.readInt()))));
+		    	  doc.inserirFim(new Triangulo(new Ponto(raf.readInt(), raf.readInt()),
+		    			  					   new Ponto(raf.readInt(), raf.readInt()),
+		    			  					   new Ponto(raf.readInt(), raf.readInt())));
 		      }
 		      else if(forma == 4) {
 		    	  doc.inserirFim(new Retangulo(new Ponto(raf.readInt(), raf.readInt()), 
-						  raf.readInt(), raf.readInt()));
+						  					   new Ponto(raf.readInt(), raf.readInt())));
 		      }
 		      else if(forma == 5) {
-		    	  doc.inserirFim(new Circulo(raf.readInt(), raf.readInt(), raf.readInt()));
+		    	  doc.inserirFim(new Circulo(new Ponto(raf.readInt(), raf.readInt()),
+		    			                     new Ponto(raf.readInt(), raf.readInt())));
 		      }
 			  } catch (EOFException e) {
 				break;

@@ -1,59 +1,128 @@
 package formas;
 
-import java.awt.Graphics;
-import java.io.Serializable;
+import java.nio.ByteBuffer;
 
+import manipuladores.ManipuladorForma;
+import manipuladores.ManipuladorRetangulo;
 import pacote.FormaGeometrica;
 
-@SuppressWarnings("serial")
-public class Retangulo implements FormaGeometrica,Serializable {
-	Ponto ponto;
-	int w;
-	int h;
-	
+public class Retangulo implements FormaGeometrica {
+
+	public static final byte ID = 4;
+	public static final String NOME = "Retangulo";
+	private Ponto a;
+	private Ponto b;
+
+	private Ponto c;
+	private Ponto d;
+
 	public Retangulo() {
-		this.ponto = new Ponto();
-		this.w = 0;
-		this.h = 0;
+		this.a = new Ponto();
+		this.b = new Ponto();
+		this.c = new Ponto();
+		this.d = new Ponto();
+	}
+
+	public Retangulo(Ponto p) {
+		this.a = new Ponto(p);
+		this.b = new Ponto(p);
+		this.c = new Ponto(p);
+		this.d = new Ponto(p);
 	}
 	
-	public Retangulo(Ponto ponto, int w, int h) {
-		this.ponto = (Ponto) ponto;
-		this.w = w;
-		this.h = h;
+	public Retangulo(Ponto a, Ponto b) {
+		this.a = new Ponto(a);
+		this.b = new Ponto(b);
+	}
+
+	public Retangulo(Retangulo r) {
+		this.a = r.getA();
+		this.b = r.getB();
+		this.c = r.getC();
+		this.d = r.getD();
+	}
+
+	public Retangulo(byte arrayForma[]) {
+		ByteBuffer bb = ByteBuffer.allocate(8);
+//		bb.order(ByteOrder.LITTLE_ENDIAN);//ordem de bits esq p/ direita
+		bb.put(arrayForma[1]);// x
+		bb.put(arrayForma[2]);// x
+		bb.put(arrayForma[3]);// y
+		bb.put(arrayForma[4]);// y
+
+		bb.put(arrayForma[5]);// x
+		bb.put(arrayForma[6]);// x
+		bb.put(arrayForma[7]);// y
+		bb.put(arrayForma[8]);// y
+
+		int x1 = bb.getShort(0);
+		int y1 = bb.getShort(2);
+
+		int x2 = bb.getShort(4);
+		int y2 = bb.getShort(6);
+
+		this.a = new Ponto(x1, y1);
+		this.b = new Ponto(x2, y2);
 	}
 	
-	public Ponto getPonto() {
-		return ponto;
-	}
-
-	public void setPonto(Ponto ponto) {
-		this.ponto = ponto;
-	}
-
-	public int getW() {
-		return w;
-	}
-
-	public void setW(int w) {
-		this.w = w;
-	}
-
-	public int getH() {
-		return h;
-	}
-
-	public void setH(int h) {
-		this.h = h;
+	@Override
+	public String toTextLine() {
+		return NOME + " " + a.getX() + " " + a.getY() + " " + b.getX() + " " + b.getY();
 	}
 
 	@Override
-	public void desenhar(Graphics g) {
-		g.drawRect(ponto.x, ponto.y, w, h);
+	public String toTextLineBD() {
+		return a.getX() + "," + a.getY() + " | " + b.getX() + "," + b.getY();
 	}
 	
+	@Override
+	public String getStrPosition() {
+		return NOME+" ("+a.getX()+", "+a.getY()+"),("+b.getX()+", "+b.getY()+");";
+	}
+	
+	@Override
 	public String toString() {
-		return String.format("%d %d %d %d", ponto.x, ponto.y, w, h);
+		return NOME;
+	}
+
+	public Ponto getA() {
+		return a;
+	}
+
+	public void setA(Ponto a) {
+		this.a = a;
+	}
+
+	public Ponto getB() {
+		return b;
+	}
+
+	public void setB(Ponto b) {
+		this.b = b;
+	}
+
+	public Ponto getC() {
+		return c;
+	}
+
+	public void setC(Ponto c) {
+		this.c = c;
+	}
+
+	public Ponto getD() {
+		return d;
+	}
+
+	public void setD(Ponto d) {
+		this.d = d;
+	}
+
+	@Override
+	public ManipuladorForma getManipulador() {
+		return new ManipuladorRetangulo(this);
 	}
 	
+	public String toStringArq() {
+		return String.format("%d %d %d %d", a.x, a.y, b.x, b.y);
+	}
 }

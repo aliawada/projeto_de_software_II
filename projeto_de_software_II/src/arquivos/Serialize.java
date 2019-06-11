@@ -21,7 +21,7 @@ public class Serialize
  		 FormaGeometrica forma;
          
  		 while((forma = it.proximo()) != null) {
-         out.writeObject(forma.getClass().getSimpleName() + " " + forma.toString());
+         out.writeObject(forma.getClass().getSimpleName() + " " + forma.toStringArq());
          
  		 }
  		 

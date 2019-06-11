@@ -1,10 +1,16 @@
 package pacote;
 
-import java.awt.Graphics;
+import manipuladores.ManipuladorForma;
 
 public interface FormaGeometrica {
 		
 	String toString();
-	void desenhar(Graphics g);
+	String toTextLine();
+    String toTextLineBD();
+    String getStrPosition();
+    String toStringArq();
+    
+	ManipuladorForma getManipulador();
+	
 	
 }

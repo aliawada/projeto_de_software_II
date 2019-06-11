@@ -28,7 +28,7 @@ public class PainelTexto extends JTextArea implements OuvintePaineis{
 		Iterador<FormaGeometrica> i = doc.getIterador();
 		FormaGeometrica forma;
 		while((forma = i.proximo()) != null) {
-			buf.append(forma);
+			buf.append(forma.toTextLine());
 			buf.append("\n");
 		}
 		setText(buf.toString());

@@ -30,19 +30,17 @@ public class Deserialize
 																  new Ponto(Integer.valueOf(parts[3]), Integer.valueOf(parts[4]))));
 				}
 				else if(parts[0].equals("Triangulo")) {
-					doc.inserirFim(new Triangulo(new Linha(new Ponto(Integer.valueOf(parts[1]), Integer.valueOf(parts[2])), 
-																				new Ponto(Integer.valueOf(parts[3]), Integer.valueOf(parts[4]))),
-																	  new Linha(new Ponto(Integer.valueOf(parts[5]), Integer.valueOf(parts[6])), 
-																			  	new Ponto(Integer.valueOf(parts[7]), Integer.valueOf(parts[8]))),
-																	  new Linha(new Ponto(Integer.valueOf(parts[9]), Integer.valueOf(parts[10])), 
-																			  	new Ponto(Integer.valueOf(parts[11]), Integer.valueOf(parts[12])))));
+					doc.inserirFim(new Triangulo(new Ponto(Integer.valueOf(parts[1]), Integer.valueOf(parts[2])),
+												 new Ponto(Integer.valueOf(parts[3]), Integer.valueOf(parts[4])),
+												 new Ponto(Integer.valueOf(parts[5]), Integer.valueOf(parts[6]))));
 				}
 				else if(parts[0].equals("Retangulo")) {
 					doc.inserirFim(new Retangulo(new Ponto(Integer.valueOf(parts[1]), Integer.valueOf(parts[2])), 
-																	  Integer.valueOf(parts[3]), Integer.valueOf(parts[4])));
+												 new Ponto(Integer.valueOf(parts[3]), Integer.valueOf(parts[4]))));
 				}
 				else if(parts[0].equals("Circulo")) {
-					doc.inserirFim(new Circulo(Integer.valueOf(parts[1]), Integer.valueOf(parts[2]), Integer.valueOf(parts[3])));
+					doc.inserirFim(new Circulo(new Ponto(Integer.valueOf(parts[1]) , Integer.valueOf(parts[2])), 
+											   new Ponto(Integer.valueOf(parts[3]), Integer.valueOf(parts[4]))));
 				}
          }
          in.close();

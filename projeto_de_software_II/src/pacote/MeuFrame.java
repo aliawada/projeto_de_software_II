@@ -1,11 +1,11 @@
 package pacote;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -14,9 +14,28 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
+import connection.ConexaoMySQL;
+import dao.DesenhoDAO;
+import entidades.Desenho;
+import formas.Circulo;
+import formas.Lapis;
+import formas.Linha;
+import formas.Ponto;
+import formas.Retangulo;
+import formas.Triangulo;
+import lista.encadeada.ListaEncadeada;
+import visualizacao.FrameBancoDeDados;
+
 @SuppressWarnings("serial")
 public class MeuFrame extends JFrame{
 	
+	 private ConexaoMySQL mysql
+     = new ConexaoMySQL
+     ("localhost", "formas_geometricas", "root", "root");
+	
+	PainelDesenhar paineldesenhar;
+	Desenho desenhoAberto;
+	 
 	public MeuFrame(Documento doc) {
 		
 		super("Trabalho PSW II");
@@ -27,8 +46,9 @@ public class MeuFrame extends JFrame{
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		JLabel status = new JLabel("Arraste o mouse para desenhar");
-		PainelDesenhar paineldesenhar = new PainelDesenhar(status, doc);
+		paineldesenhar = new PainelDesenhar(status, doc);
 		PainelTexto paineltexto = new PainelTexto(doc);
+		FrameBancoDeDados frameBD = new FrameBancoDeDados(this, mysql);
 		JMenuBar menuBar = new JMenuBar();
 		JMenu fileMenu = new JMenu("File");
 		JMenuItem newAction = new JMenuItem("New");
@@ -41,9 +61,10 @@ public class MeuFrame extends JFrame{
 	    JMenuItem figureTriangle = new JMenuItem("Triangulo");
 	    JMenuItem figureRectangle = new JMenuItem("Retangulo");
 	    JMenuItem figureCircle = new JMenuItem("Circulo");
-	    JMenu propriedadesMenu = new JMenu("Propriedades");
-	    JMenuItem colors = new JMenuItem("Cores");
-	    
+	    JMenuItem figurePencil = new JMenuItem("Lapis");
+	    JMenu bdMenu = new JMenu("BD");
+	    JMenuItem readBD = new JMenuItem("ler BD");
+	    JMenuItem saveBD = new JMenuItem("salvar BD");
 	    
 		this.add(status, BorderLayout.SOUTH);
 		this.add(paineldesenhar, BorderLayout.CENTER);
@@ -62,8 +83,10 @@ public class MeuFrame extends JFrame{
 	    figureMenu.add(figureTriangle);
 	    figureMenu.add(figureRectangle);
 	    figureMenu.add(figureCircle);
-	    menuBar.add(propriedadesMenu);
-	    propriedadesMenu.add(colors);
+	    figureMenu.add(figurePencil);
+	    menuBar.add(bdMenu);
+	    bdMenu.add(readBD);
+	    bdMenu.add(saveBD);
 	    
 	    paineltexto.setEditable(false);
 	   
@@ -71,34 +94,11 @@ public class MeuFrame extends JFrame{
 	    doc.adicionaOuvinte(paineldesenhar);
 	    doc.adicionaOuvinte(paineltexto);
 	    
-	    colors.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if(e.getSource() == colors) {
-					int response = corFormas();
-					  
-				   	  if(response == 0) {
-				   		  paineldesenhar.color = Color.red;
-					  }
-				   	  else if(response == 1) {
-				   		paineldesenhar.color = Color.green;
-				   	  }
-				   	  else if(response == 2) {
-				   		paineldesenhar.color = Color.blue;
-				   	  }
-				   	  else if(response == 3) {
-				   		paineldesenhar.color = Color.black;
-				   	  }
-				   	  else if(response == 4) {
-				   		paineldesenhar.color = Color.yellow;
-				   	  }
-				}		
-			}
-		});  
 	    
 		saveAction.addActionListener(new ActionListener() {	
 			public void actionPerformed(ActionEvent e) {	
 				if(e.getSource() == saveAction) {	
-					Principal.getPrincipal().getDocumentoAtivo().salvarFormas();
+					doc.salvarFormas();
 					paineldesenhar.repaint();
 			 }
 			}
@@ -108,7 +108,7 @@ public class MeuFrame extends JFrame{
         newAction.addActionListener(new ActionListener() {	
 			public void actionPerformed(ActionEvent e) {	
 				if(e.getSource() == newAction) {
-					Principal.getPrincipal().getDocumentoAtivo().novoArquivo();
+					doc.novoArquivo();
 					paineldesenhar.repaint();
 		      }	
 			}
@@ -117,7 +117,7 @@ public class MeuFrame extends JFrame{
        openAction.addActionListener(new ActionListener() {	
 			public void actionPerformed(ActionEvent e) {	
 				if(e.getSource() == openAction) {
-					Principal.getPrincipal().getDocumentoAtivo().lerFormas();
+					doc.lerFormas();
 					paineldesenhar.repaint();
 				}
 			}
@@ -134,19 +134,15 @@ public class MeuFrame extends JFrame{
         this.addKeyListener(new KeyAdapter() {
             public void keyPressed(KeyEvent event) {
                if (event.getKeyCode() == KeyEvent.VK_DELETE){
-            	   Principal.getPrincipal().getDocumentoAtivo().crtlZ();
-            	   paineldesenhar.repaint();
+            	   doc.crtlZ();
+            	   doc.atualizaOuvinte();
                }
             }        });
         
         figurePonto.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(e.getSource() == figurePonto) {
-					paineldesenhar.controlePonto = true;
-					paineldesenhar.controleLinha = false;
-					paineldesenhar.controleTriangulo = false;
-					paineldesenhar.controleRetangulo = false;
-					paineldesenhar.controleCirculo = false;
+					paineldesenhar.novaFormaGeometrica(new Ponto());
 		      }
 			}
 		});
@@ -154,12 +150,7 @@ public class MeuFrame extends JFrame{
         figureLinha.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(e.getSource() == figureLinha) {
-					paineldesenhar.controlePonto = false;
-					paineldesenhar.controleLinha = true;
-					paineldesenhar.controleTriangulo = false;
-					paineldesenhar.controleRetangulo = false;	
-					paineldesenhar.controleCirculo = false;
-					JOptionPane.showMessageDialog(null, "Pressione e Solte para desenhar uma Linha!");
+					paineldesenhar.novaFormaGeometrica(new Linha());
 				}
 			}
 		});
@@ -167,12 +158,7 @@ public class MeuFrame extends JFrame{
         figureTriangle.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(e.getSource() == figureTriangle) {
-					paineldesenhar.controlePonto = false;
-					paineldesenhar.controleLinha = false;
-					paineldesenhar.controleTriangulo = true;
-					paineldesenhar.controleRetangulo = false;	
-					paineldesenhar.controleCirculo = false;
-					JOptionPane.showMessageDialog(null, "Click em 3 pontos diferentes para desenhar um Triangulo!");
+					paineldesenhar.novaFormaGeometrica(new Triangulo());
 				}	
 			}
 		});  
@@ -180,13 +166,7 @@ public class MeuFrame extends JFrame{
         figureRectangle.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(e.getSource() == figureRectangle) {
-					paineldesenhar.controlePonto = false;
-					paineldesenhar.controleLinha = false;
-					paineldesenhar.controleTriangulo = false;
-					paineldesenhar.controleRetangulo = true;	
-					paineldesenhar.controleCirculo = false;
-					JOptionPane.showMessageDialog(null, "Click em 3 pontos diferentes para desenhar um Retangulo!\n"
-							+ "1- Onde começa\n" + "2- width\n" + "3- height");
+					paineldesenhar.novaFormaGeometrica(new Retangulo());
 				}		
 			}
 		}); 
@@ -194,30 +174,105 @@ public class MeuFrame extends JFrame{
         figureCircle.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(e.getSource() == figureCircle) {
-					paineldesenhar.controlePonto = false;
-					paineldesenhar.controleLinha = false;
-					paineldesenhar.controleTriangulo = false;
-					paineldesenhar.controleRetangulo = false;
-					paineldesenhar.controleCirculo = true;
-					JOptionPane.showMessageDialog(null, "Pressione no Ponto Central, arraste e solte para determinar o radiano e desenhar um Circulo!");
+					paineldesenhar.novaFormaGeometrica(new Circulo());
 				}		
 			}
-		});  
+		}); 
+        
+        figurePencil.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(e.getSource() == figurePencil) {
+					paineldesenhar.novaFormaGeometrica(new Lapis());
+				}		
+			}
+		}); 
+        
+        readBD.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(e.getSource() == readBD) {
+					doc.abrirFrameBD(frameBD);
+				}		
+			}
+		});   
+        
+        saveBD.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(e.getSource() == saveBD) {
+					jMenuItemArqBdSalvarActionPerformed(e);
+				}		
+			}
+		}); 
 		
 	}
 	
-	public static int corFormas() {
-		String[] options = new String[] {"<html><font color=red face=arial><b> Vermelho", 
-										 "<html><font color=green face=arial><b> Verde", 
-										 "<html><font color=blue face=arial><b> Azul", 
-										 "<html><font color=black face=arial><b> Preto", 
-										 "<html><font color=yellow face=arial><b> Amarelo",
-										 "<html><font color=white face=arial><b> Branco"};
-		
-	    int response = JOptionPane.showOptionDialog(null, "Cor das Formas?", "Options",
-	        JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,
-	        null, options, options[0]);
-	    return response;
-	}	
+	public void abreDesenho(Desenho desenho) {
+		   
+	    desenhoAberto = desenho;
+	    
+	    setTitle( desenho.getNome() );
+
+        Principal.getPrincipal().getDocumentoAtivo().setListaFormas( new ListaEncadeada<>() );
+        paineldesenhar.iniciaCanvas();
+
+        List<FormaGeometrica> listaFormas = Fabrica.gerarFormasGeometricas( desenho );
+
+        listaFormas.forEach(formaGeometrica ->{
+        	paineldesenhar.novaFormaGeometrica( formaGeometrica );
+        });
+        
+        paineldesenhar.atualizar();
+        
+        paineldesenhar.doc.atualizaOuvinte();
+	  
+   }
+	
+	public void jMenuItemArqBdSalvarActionPerformed(java.awt.event.ActionEvent evt) {
+
+        if (desenhoAberto == null){
+            jMenuItemArqBdSalvarComo(evt);
+        }else{
+            Desenho d_aux = Fabrica.criarDesenhoDao(Principal.getPrincipal().getDocumentoAtivo(), desenhoAberto.getNome());
+            d_aux.setId( desenhoAberto.getId() );
+
+            mysql.conectar();
+
+            if (new DesenhoDAO(mysql.getConexao()).atualizarDesenho( d_aux )){
+                desenhoAberto = new DesenhoDAO(mysql.getConexao()).consultaId( d_aux.getId() );
+                setTitle( desenhoAberto.getNome()  );
+
+               JOptionPane.showMessageDialog(null, desenhoAberto.getNome()+ " atualizado!" + desenhoAberto.getId() );
+            }else{
+            	JOptionPane.showMessageDialog(null, DesenhoDAO.getInfo() );
+            }
+
+            mysql.desconectar();
+
+        }
+
+
+    }
+
+    public void jMenuItemArqBdSalvarComo(java.awt.event.ActionEvent evt) {
+        String nome = JOptionPane.showInputDialog(null,"Insira o nome do desenho:");
+        System.out.println(nome);
+
+        if (nome != null){
+            Desenho desenho = Fabrica.criarDesenhoDao(Principal.getPrincipal().getDocumentoAtivo(), nome);
+
+            mysql.conectar();
+
+            if (new DesenhoDAO(mysql.getConexao()).inserirDesenho(desenho)){
+                desenhoAberto = new DesenhoDAO(mysql.getConexao()).consultaId(DesenhoDAO.last_genKey);
+                setTitle( desenhoAberto.getNome() );
+
+                JOptionPane.showMessageDialog(null, nome + " inserido!" + DesenhoDAO.last_genKey );
+            }else{
+            	JOptionPane.showMessageDialog(null, DesenhoDAO.getInfo() );
+            }
+
+            mysql.desconectar();
+        }
+    }
+
 	
 }

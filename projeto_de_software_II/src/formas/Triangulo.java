@@ -1,63 +1,128 @@
 package formas;
 
-import java.awt.Graphics;
 import java.io.Serializable;
+import java.nio.ByteBuffer;
 
+import manipuladores.ManipuladorForma;
+import manipuladores.ManipuladorTriangulo;
 import pacote.FormaGeometrica;
 
 @SuppressWarnings("serial")
 public class Triangulo implements FormaGeometrica,Serializable {
-	Linha linha1;
-	Linha linha2;
-	Linha linha3;
+
+	public static final String NOME = "Triangulo";
+	public static final byte ID = 3;
+	Ponto a;
+	Ponto b;
+	Ponto c;
 	
 	public Triangulo() {
-		this.linha1 = new Linha();
-		this.linha2 = new Linha();
-		this.linha3 = new Linha();
+		this.a = new Ponto();
+		this.b = new Ponto();
+		this.c = new Ponto();
 	}
 	
-	public Triangulo(Linha linha1, Linha linha2, Linha linha3) {
-		this.linha1 = (Linha) linha1;
-		this.linha2 = (Linha) linha2;
-		this.linha3 = (Linha) linha3;
+	public Triangulo(Ponto p) {
+		this.a = new Ponto(p);
+		this.b = new Ponto(p);
+		this.c = new Ponto(p);
+	}
+	
+	public Triangulo(Ponto a,Ponto b, Ponto c) {
+		this.a = a;
+		this.b = b;
+		this.c = c;
+	}
+	
+	public Triangulo(byte arrayForma[]) {
+		ByteBuffer bb = ByteBuffer.allocate(12);
+//		bb.order(ByteOrder.LITTLE_ENDIAN);//ordem de bits esq p/ direita
+		bb.put(arrayForma[1]);//x
+		bb.put(arrayForma[2]);//x
+		bb.put(arrayForma[3]);//y
+		bb.put(arrayForma[4]);//y
+
+		bb.put(arrayForma[5]);//x
+		bb.put(arrayForma[6]);//x
+		bb.put(arrayForma[7]);//y
+		bb.put(arrayForma[8]);//y
+		
+		bb.put(arrayForma[9]);//x
+		bb.put(arrayForma[10]);//x
+		bb.put(arrayForma[11]);//y
+		bb.put(arrayForma[12]);//y
+
+		int x1 = bb.getShort(0);
+		int y1 = bb.getShort(2);
+
+		int x2 = bb.getShort(4);
+		int y2 = bb.getShort(6);
+		
+		int x3 = bb.getShort(8);
+		int y3 = bb.getShort(10);
+
+		this.a = new Ponto(x1,y1);
+		this.b = new Ponto(x2,y2);
+		this.c = new Ponto(x3,y3);
+	}
+	
+	@Override
+	public String getStrPosition() {
+		return NOME+" ("+a.getX()+", "+a.getY()+"),("+b.getX()+", "+b.getY()+"),("+c.getX()+", "+ c.getY() +");";
+	}
+	
+	public Ponto getA() {
+		return a;
 	}
 
-	public Linha getLinha1() {
-		return linha1;
+
+	public void setA(Ponto a) {
+		this.a = a;
 	}
 
-	public void setLinha1(Linha linha1) {
-		this.linha1 = linha1;
+
+	public Ponto getB() {
+		return b;
 	}
 
-	public Linha getLinha2() {
-		return linha2;
+
+	public void setB(Ponto b) {
+		this.b = b;
 	}
 
-	public void setLinha2(Linha linha2) {
-		this.linha2 = linha2;
+
+	public Ponto getC() {
+		return c;
 	}
 
-	public Linha getLinha3() {
-		return linha3;
+
+	public void setC(Ponto c) {
+		this.c = c;
 	}
 
-	public void setLinha3(Linha linha3) {
-		this.linha3 = linha3;
+
+	public String toString() {
+		return NOME;
 	}
 
 	@Override
-	public void desenhar(Graphics g) {
-		g.drawLine(linha1.ponto1.x, linha1.ponto1.y, linha1.ponto2.x, linha1.ponto2.y);
-		g.drawLine(linha2.ponto1.x, linha2.ponto1.y, linha2.ponto2.x, linha2.ponto2.y);
-		g.drawLine(linha3.ponto1.x, linha3.ponto1.y, linha3.ponto2.x, linha3.ponto2.y);
+	public ManipuladorForma getManipulador() {
+		return new ManipuladorTriangulo(this);
 	}
 	
-	public String toString() {
-		return String.format("%d %d %d %d %d %d %d %d %d %d %d %d", linha1.ponto1.x, linha1.ponto1.y, linha1.ponto2.x, linha1.ponto2.y,
-																	linha2.ponto1.x, linha2.ponto1.y, linha2.ponto2.x, linha2.ponto2.y,
-																	linha3.ponto1.x, linha3.ponto1.y, linha3.ponto2.x, linha3.ponto2.y);
+	@Override
+	public String toTextLine() {
+		return NOME + " " + a.getX()+" "+a.getY()+" "+b.getX()+" "+b.getY()+" "+c.getX()+" "+c.getY();
 	}
+
+	@Override
+	public String toTextLineBD() {
+		return a.getX()+","+a.getY()+" | "+b.getX()+","+b.getY()+" | "+c.getX()+","+c.getY();
+	}
+	
+	public String toStringArq() {
+		return String.format("%d %d %d %d %d %d", a.x, a.y, b.x, b.y, c.x, c.y);
+	}
+	
 	
 }

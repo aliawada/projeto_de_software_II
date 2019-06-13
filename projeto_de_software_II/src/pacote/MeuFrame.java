@@ -5,7 +5,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -18,21 +17,18 @@ import connection.ConexaoMySQL;
 import dao.DesenhoDAO;
 import entidades.Desenho;
 import formas.Circulo;
-import formas.Lapis;
 import formas.Linha;
 import formas.Ponto;
+import formas.PontoRepeticao;
+import formas.Quadrado;
 import formas.Retangulo;
-import formas.Triangulo;
 import lista.encadeada.ListaEncadeada;
 import visualizacao.FrameBancoDeDados;
 
 @SuppressWarnings("serial")
 public class MeuFrame extends JFrame{
-	
-	 private ConexaoMySQL mysql
-     = new ConexaoMySQL
-     ("localhost", "formas_geometricas", "root", "root");
-	
+	private ConexaoMySQL mysql = new ConexaoMySQL();
+		
 	PainelDesenhar paineldesenhar;
 	Desenho desenhoAberto;
 	 
@@ -58,10 +54,10 @@ public class MeuFrame extends JFrame{
 	    JMenu figureMenu = new JMenu("Figure");
 	    JMenuItem figurePonto = new JMenuItem("Ponto");
 	    JMenuItem figureLinha = new JMenuItem("Linha");
-	    JMenuItem figureTriangle = new JMenuItem("Triangulo");
+	    JMenuItem figureTriangle = new JMenuItem("Quadrado");
 	    JMenuItem figureRectangle = new JMenuItem("Retangulo");
 	    JMenuItem figureCircle = new JMenuItem("Circulo");
-	    JMenuItem figurePencil = new JMenuItem("Lapis");
+	    JMenuItem figurePencil = new JMenuItem("Repetição");
 	    JMenu bdMenu = new JMenu("BD");
 	    JMenuItem readBD = new JMenuItem("ler BD");
 	    JMenuItem saveBD = new JMenuItem("salvar BD");
@@ -158,7 +154,7 @@ public class MeuFrame extends JFrame{
         figureTriangle.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(e.getSource() == figureTriangle) {
-					paineldesenhar.novaFormaGeometrica(new Triangulo());
+					paineldesenhar.novaFormaGeometrica(new Quadrado());
 				}	
 			}
 		});  
@@ -182,7 +178,7 @@ public class MeuFrame extends JFrame{
         figurePencil.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(e.getSource() == figurePencil) {
-					paineldesenhar.novaFormaGeometrica(new Lapis());
+					paineldesenhar.novaFormaGeometrica(new PontoRepeticao());
 				}		
 			}
 		}); 
@@ -212,15 +208,10 @@ public class MeuFrame extends JFrame{
 	    setTitle( desenho.getNome() );
 
         Principal.getPrincipal().getDocumentoAtivo().setListaFormas( new ListaEncadeada<>() );
-        paineldesenhar.iniciaCanvas();
 
-        List<FormaGeometrica> listaFormas = Fabrica.gerarFormasGeometricas( desenho );
-
-        listaFormas.forEach(formaGeometrica ->{
-        	paineldesenhar.novaFormaGeometrica( formaGeometrica );
-        });
+        ListaEncadeada<FormaGeometrica> listaFormas = Fabrica.gerarFormasGeometricas( desenho );   
         
-        paineldesenhar.atualizar();
+        Principal.getPrincipal().getDocumentoAtivo().setListaFormas(listaFormas);
         
         paineldesenhar.doc.atualizaOuvinte();
 	  
@@ -240,21 +231,16 @@ public class MeuFrame extends JFrame{
                 desenhoAberto = new DesenhoDAO(mysql.getConexao()).consultaId( d_aux.getId() );
                 setTitle( desenhoAberto.getNome()  );
 
-               JOptionPane.showMessageDialog(null, desenhoAberto.getNome()+ " atualizado!" + desenhoAberto.getId() );
+               JOptionPane.showMessageDialog(null, desenhoAberto.getNome()+ " atualizado!");
             }else{
             	JOptionPane.showMessageDialog(null, DesenhoDAO.getInfo() );
             }
-
             mysql.desconectar();
-
         }
-
-
     }
 
     public void jMenuItemArqBdSalvarComo(java.awt.event.ActionEvent evt) {
         String nome = JOptionPane.showInputDialog(null,"Insira o nome do desenho:");
-        System.out.println(nome);
 
         if (nome != null){
             Desenho desenho = Fabrica.criarDesenhoDao(Principal.getPrincipal().getDocumentoAtivo(), nome);
@@ -265,7 +251,7 @@ public class MeuFrame extends JFrame{
                 desenhoAberto = new DesenhoDAO(mysql.getConexao()).consultaId(DesenhoDAO.last_genKey);
                 setTitle( desenhoAberto.getNome() );
 
-                JOptionPane.showMessageDialog(null, nome + " inserido!" + DesenhoDAO.last_genKey );
+                JOptionPane.showMessageDialog(null, nome + " salvo no Banco de Dados!");
             }else{
             	JOptionPane.showMessageDialog(null, DesenhoDAO.getInfo() );
             }

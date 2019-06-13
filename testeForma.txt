@@ -1,0 +1,5 @@
+Retangulo 97 105 305 179
+Ponto 88 85
+Linha 181 95 340 133
+Quadrado 209 71 396 99
+Retangulo 196 268 405 341

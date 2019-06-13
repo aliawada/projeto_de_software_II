@@ -1,8 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package dao;
 
 import java.sql.Connection;
@@ -18,11 +13,6 @@ import entidades.Desenho;
 
 import dao.FormaDAO;
 
-
-/**
- *
- * @author admin
- */
 public class DesenhoDAO extends Conexao {
     public static int last_genKey = 0;
 
@@ -178,21 +168,5 @@ public class DesenhoDAO extends Conexao {
             return null;
         }
     }
-
-    public boolean excluirDesenho_id(int id) {
-        try {
-            String sql_formas = "DELETE FROM desenho WHERE id = " + id;
-            Statement stmt = conexao.createStatement();
-            stmt.execute(sql_formas);
-            stmt.close();
-
-            return true;
-        } catch (SQLException E) {
-            E.printStackTrace();
-            return false;
-        }
-
-    }
-
 
 }

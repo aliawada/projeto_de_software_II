@@ -1,42 +1,20 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package connection;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-/**
- *
- * @author admin
- */
 public class ConexaoMySQL {
     private Connection conexao = null;
-    public String serverName, mydatabase, senha,usuario;
-
-    public ConexaoMySQL(String server, String database, String senha, String usuario) {
-    	 this.serverName = server;
-         this.mydatabase = database;
-         this.senha = senha;
-         this.usuario = usuario;
-    }
     
     public String conectar(){
         try {
-            //driver
-            String driverName = "com.mysql.cj.jdbc.Driver"; // MySQL MM JDBC driver
+        	
+            String driverName = "com.mysql.cj.jdbc.Driver";
             Class.forName(driverName);
 
-            //parametros de conexao
-            String serverName = this.serverName;
-            String mydatabase = this.mydatabase;
-            String url = "jdbc:mysql://" + serverName + "/" + mydatabase + "?useTimezone=true&serverTimezone=UTC"; // a JDBC url
-            String username = this.usuario;
-            String password = this.senha;
-            setConexao(DriverManager.getConnection(url, username, password));
+            String url = "jdbc:mysql://localhost/psw?useTimezone=true&serverTimezone=UTC"; // a JDBC url
+            setConexao(DriverManager.getConnection(url, "root", "root"));
         } catch (ClassNotFoundException e) {
             System.out.println("Erro no driver de conexao MySQL!");
             e.printStackTrace();

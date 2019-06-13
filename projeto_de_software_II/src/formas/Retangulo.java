@@ -13,21 +13,14 @@ public class Retangulo implements FormaGeometrica {
 	private Ponto a;
 	private Ponto b;
 
-	private Ponto c;
-	private Ponto d;
-
 	public Retangulo() {
 		this.a = new Ponto();
 		this.b = new Ponto();
-		this.c = new Ponto();
-		this.d = new Ponto();
 	}
 
 	public Retangulo(Ponto p) {
 		this.a = new Ponto(p);
 		this.b = new Ponto(p);
-		this.c = new Ponto(p);
-		this.d = new Ponto(p);
 	}
 	
 	public Retangulo(Ponto a, Ponto b) {
@@ -38,8 +31,6 @@ public class Retangulo implements FormaGeometrica {
 	public Retangulo(Retangulo r) {
 		this.a = r.getA();
 		this.b = r.getB();
-		this.c = r.getC();
-		this.d = r.getD();
 	}
 
 	public Retangulo(byte arrayForma[]) {
@@ -99,22 +90,6 @@ public class Retangulo implements FormaGeometrica {
 
 	public void setB(Ponto b) {
 		this.b = b;
-	}
-
-	public Ponto getC() {
-		return c;
-	}
-
-	public void setC(Ponto c) {
-		this.c = c;
-	}
-
-	public Ponto getD() {
-		return d;
-	}
-
-	public void setD(Ponto d) {
-		this.d = d;
 	}
 
 	@Override

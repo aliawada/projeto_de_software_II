@@ -9,8 +9,8 @@ import java.io.RandomAccessFile;
 import formas.Circulo;
 import formas.Linha;
 import formas.Ponto;
+import formas.Quadrado;
 import formas.Retangulo;
-import formas.Triangulo;
 import lista.encadeada.Iterador;
 import pacote.Documento;
 import pacote.FormaGeometrica;
@@ -48,14 +48,12 @@ public class RandomAcessFile {
 				raf.writeInt(Integer.valueOf(parts[3]));
 				raf.writeInt(Integer.valueOf(parts[4]));
 			}
-			else if(parts[0].equals("Triangulo")) {
+			else if(parts[0].equals("Quadrado")) {
 				raf.writeByte(3);
 				raf.writeInt(Integer.valueOf(parts[1]));
 				raf.writeInt(Integer.valueOf(parts[2]));
 				raf.writeInt(Integer.valueOf(parts[3]));
 				raf.writeInt(Integer.valueOf(parts[4]));
-				raf.writeInt(Integer.valueOf(parts[5]));
-				raf.writeInt(Integer.valueOf(parts[6]));
 			}
 			else if(parts[0].equals("Retangulo")) {
 				raf.writeByte(4);
@@ -94,12 +92,11 @@ public class RandomAcessFile {
 		      }
 		      else if(forma == 2) {
 		    	  doc.inserirFim(new Linha(new Ponto(raf.readInt(), raf.readInt()),
-						  new Ponto(raf.readInt(), raf.readInt())));
+						  		 		   new Ponto(raf.readInt(), raf.readInt())));
 		      }
 		      else if(forma == 3) {
-		    	  doc.inserirFim(new Triangulo(new Ponto(raf.readInt(), raf.readInt()),
-		    			  					   new Ponto(raf.readInt(), raf.readInt()),
-		    			  					   new Ponto(raf.readInt(), raf.readInt())));
+		    	  doc.inserirFim(new Quadrado(new Ponto(raf.readInt(), raf.readInt()),
+		    			  					  new Ponto(raf.readInt(), raf.readInt())));
 		      }
 		      else if(forma == 4) {
 		    	  doc.inserirFim(new Retangulo(new Ponto(raf.readInt(), raf.readInt()), 

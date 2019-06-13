@@ -224,20 +224,12 @@ public class Documento {
 		    }
 	   }
 	  
-	   public void salvarDesenho() {
-		   
-	   }
-	   
 	   public void abrirFrameBD(FrameBancoDeDados frameBD) {
 	        frameBD.addWindowListener(new WindowAdapter() {
-
 	            @Override
 	            public void windowClosing(WindowEvent e) {
-//	                doc.removeOuvinte(panelTexto);
-//	                frameTabela = null;
 	            	frameBD.dispose();
 	            }
-
 	        });
 	        frameBD.setVisible(true);
 	   }

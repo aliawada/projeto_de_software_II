@@ -8,8 +8,8 @@ import java.io.ObjectInputStream;
 import formas.Circulo;
 import formas.Linha;
 import formas.Ponto;
+import formas.Quadrado;
 import formas.Retangulo;
-import formas.Triangulo;
 import pacote.Documento;
 
 public class Deserialize
@@ -29,10 +29,9 @@ public class Deserialize
 					doc.inserirFim(new Linha(new Ponto(Integer.valueOf(parts[1]), Integer.valueOf(parts[2])), 
 																  new Ponto(Integer.valueOf(parts[3]), Integer.valueOf(parts[4]))));
 				}
-				else if(parts[0].equals("Triangulo")) {
-					doc.inserirFim(new Triangulo(new Ponto(Integer.valueOf(parts[1]), Integer.valueOf(parts[2])),
-												 new Ponto(Integer.valueOf(parts[3]), Integer.valueOf(parts[4])),
-												 new Ponto(Integer.valueOf(parts[5]), Integer.valueOf(parts[6]))));
+				else if(parts[0].equals("Quadrado")) {
+					doc.inserirFim(new Quadrado(new Ponto(Integer.valueOf(parts[1]), Integer.valueOf(parts[2])),
+												 new Ponto(Integer.valueOf(parts[3]), Integer.valueOf(parts[4]))));
 				}
 				else if(parts[0].equals("Retangulo")) {
 					doc.inserirFim(new Retangulo(new Ponto(Integer.valueOf(parts[1]), Integer.valueOf(parts[2])), 

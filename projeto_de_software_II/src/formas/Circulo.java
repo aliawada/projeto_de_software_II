@@ -79,9 +79,9 @@ public class Circulo implements FormaGeometrica,Serializable {
 	}
 
 	@Override
-	public String toTextLineBD() {
-		return NOME+" "+a.getX()+" "+a.getY()+" "+b.getX()+" "+b.getY();
-	}
+    public String toTextLineBD() {
+		return a.getX()+","+a.getY()+" | "+b.getX()+","+b.getY();
+    }
 
 	@Override
 	public ManipuladorForma getManipulador() {

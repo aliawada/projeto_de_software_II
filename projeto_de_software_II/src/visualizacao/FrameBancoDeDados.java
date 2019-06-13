@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package visualizacao;
 
 import java.awt.Point;
@@ -21,10 +16,6 @@ import pacote.MeuFrame;
 import table.model.DesenhoTableModel;
 import table.model.FormaTableModel;
 
-/**
- *
- * @author suga
- */
 @SuppressWarnings("serial")
 public class FrameBancoDeDados extends javax.swing.JFrame {
 	
@@ -34,9 +25,6 @@ public class FrameBancoDeDados extends javax.swing.JFrame {
 
     private boolean detailsVisible = false;
 
-    /**
-     * Creates new form FrameTabela
-     */
     public FrameBancoDeDados( MeuFrame pai, ConexaoMySQL mySQL) {
         this.mySQL = mySQL;
         this.pai = pai;
@@ -66,7 +54,6 @@ public class FrameBancoDeDados extends javax.swing.JFrame {
                 int row = table.rowAtPoint(point);
 
                 if (mouseEvent.getClickCount() == 2) {
-                    System.out.println( "row->" +  jTableFormas.getSelectedRow() );
 
                     if (detailsVisible){
                         jTableFormas.setModel( new DesenhoTableModel(listaDesenhos) );
@@ -92,9 +79,6 @@ public class FrameBancoDeDados extends javax.swing.JFrame {
         pai.abreDesenho( listaDesenhos.get( jTableFormas.getSelectedRow() ) );
     }
 
-
-    @SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();

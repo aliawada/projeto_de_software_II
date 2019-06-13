@@ -64,8 +64,9 @@ public class Ponto implements FormaGeometrica, Serializable {
 	
 	@Override
 	public String toTextLineBD() {
-		return NOME + " " + x + " " + y;
-	}
+        return x+","+y;
+
+    }
 
 	@Override
 	public String toString() {

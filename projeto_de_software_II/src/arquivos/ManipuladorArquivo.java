@@ -10,12 +10,11 @@ import java.io.IOException;
 import formas.Circulo;
 import formas.Linha;
 import formas.Ponto;
+import formas.Quadrado;
 import formas.Retangulo;
-import formas.Triangulo;
 import lista.encadeada.Iterador;
 import pacote.Documento;
 import pacote.FormaGeometrica;
-import pacote.Principal;
 
 public class ManipuladorArquivo {
 
@@ -31,10 +30,9 @@ public class ManipuladorArquivo {
 				} else if (parts[0].equals("Linha")) {
 					doc.inserirFim(new Linha(new Ponto(Integer.valueOf(parts[1]), Integer.valueOf(parts[2])),
 							new Ponto(Integer.valueOf(parts[3]), Integer.valueOf(parts[4]))));
-				} else if (parts[0].equals("Triangulo")) {
-					doc.inserirFim(new Triangulo(new Ponto(Integer.valueOf(parts[1]), Integer.valueOf(parts[2])),
-							new Ponto(Integer.valueOf(parts[3]), Integer.valueOf(parts[4])),
-							new Ponto(Integer.valueOf(parts[5]), Integer.valueOf(parts[6]))));
+				} else if (parts[0].equals("Quadrado")) {
+					doc.inserirFim(new Quadrado(new Ponto(Integer.valueOf(parts[1]), Integer.valueOf(parts[2])),
+							new Ponto(Integer.valueOf(parts[3]), Integer.valueOf(parts[4]))));
 				} else if (parts[0].equals("Retangulo")) {
 					doc.inserirFim(new Retangulo(new Ponto(Integer.valueOf(parts[1]), Integer.valueOf(parts[2])),
 							new Ponto(Integer.valueOf(parts[3]), Integer.valueOf(parts[4]))));
@@ -58,6 +56,7 @@ public class ManipuladorArquivo {
 			FormaGeometrica forma;
 			while ((forma = it.proximo()) != null) {
 				string = String.format(forma.getClass().getSimpleName() + " " + forma.toStringArq() + "\r\n");
+				System.out.println(forma.getClass().getSimpleName());
 				buffWrite.append(string);
 			}
 			buffWrite.close();
